@@ -45,6 +45,11 @@ composer require doctrine/doctrine-migrations-bundle
 symfony console doctrine:database:create
 ```
 ### Etape 5 : Création des migrations
+Crez une migration pour la base de données
 ```
 symfony console make:migration
+```
+executez la migration
+```
+symfony console doctrine:migrations:migrate
 ```
