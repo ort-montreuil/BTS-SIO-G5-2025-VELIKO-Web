@@ -40,3 +40,11 @@ composer require symfonycasts/verify-email-bundle symfony/mailer
 ```
 composer require doctrine/doctrine-migrations-bundle
 ```
+### Etape 4 : Création de la base de données
+```
+symfony console doctrine:database:create
+```
+### Etape 5 : Création des migrations
+```
+symfony console make:migration
+```
