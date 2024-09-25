@@ -1,5 +1,5 @@
 {% extends "base.html.twig" %}
-{% block content %}
+{% block body %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -21,19 +21,19 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-        }).addTo(mymap); //création de la map
+        }).addTo(mymap);
 
         var markers = L.markerClusterGroup();
 
-        // parcourir le 1er fichier json afin d'afficher les marqueurs selon leurs latitudes et longitudes
+        // parcourir le 1er fichier json pour afficher les marqueurs
         {% for station in response.data.stations %}
-        var latitude = '{{ station.lat }}'; // on enregistre la latitude
-        var longitude = '{{ station.lon }}'; // la longitude
-        var marker = L.marker([latitude, longitude]);//.addTo(mymap); la variable marker contient les marqueurs créés en fonction de la latitude et la longitude. Mais il est inutile de l'ajouter à la map quand on les regroupe
-        // parcourir le 2ᵉ fichier json pour récupérer le nom des stations, le nombre de vélos au total ainsi que le nombre de vélos électrique et mécanique précisément puis les afficher
+        var latitude = '{{ station.lat }}';
+        var longitude = '{{ station.lon }}';
+        var marker = L.marker([latitude, longitude]);
 
+        // parcourir le 2ᵉ fichier json pour récupérer des informations supplémentaires
         {% for st in response2.data.stations %}
-        {% if st.station_id == station.station_id %} //nous lions l'id des stations à lui-même dans les 2 fichiers json (pour regrouper les infos d'une station précise même s'ils sont dans 2 fichiers json)
+        {% if st.station_id == station.station_id %}
         marker.bindPopup('<form action="/favoritestations" method="post">' +
             "Nom : {{ station.name }}" +
             "<input type='hidden' id='nomStations' name='nomStations' value='{{ station.name }}'>" +
@@ -43,13 +43,12 @@
             "<input type='hidden' id='idStations' name='idStations' value='{{ station.station_id }}'>" +
             "<br>" +
             '<button type="submit" id="favori" name="favori">Ajouter au favori</button></form>');
-        markers.addLayer(marker); //les marqueurs sont ajoutés au groupe
+        markers.addLayer(marker);
         {% endif %}
         {% endfor %}
-
         {% endfor %}
 
-        mymap.addLayer(markers) //Après avoir créé les marqueurs, avoir défini ce qu'ils afficheront, et les avoir ajoutés au groupe "markers", on ajoute ce même groupe à la carte. Les marqueurs sont désormais affichés et organisés
+        mymap.addLayer(markers);
 
     </script>
 
@@ -57,14 +56,14 @@
     <script>
         document.getElementById('geolocate').addEventListener('click', function () {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) { // nous obtenons la position
+                navigator.geolocation.getCurrentPosition(function (position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    const marker = L.marker([lat, lng]).addTo(mymap); //on ajoute le marqueur qui contient nos coordonnées
-                    marker.bindPopup('Vous êtes ici !').openPopup(); //on l'affiche
+                    const marker = L.marker([lat, lng]).addTo(mymap);
+                    marker.bindPopup('Vous êtes ici !').openPopup();
                     mymap.setView([lat, lng], 13);
                 }, function (error) {
-                    alert('Erreur lors de géolocalisation : ' + error.message);
+                    alert('Erreur lors de la géolocalisation : ' + error.message);
                 });
             } else {
                 alert('La géolocalisation n\'est pas prise en charge par votre navigateur.');
@@ -72,10 +71,10 @@
         });
     </script>
 
-    <form action="{{ ('compte') }}" method="get"> {# permet de naviguer vers compte #}
+    <form action="{{ ('compte') }}" method="get">
         <button class="btn btn-outline-dark" type="submit">Espace compte</button>
     </form>
-    <form action="{{ ('favoritestations') }}" method="get"> {# permet de naviguer vers favoritestations #}
+    <form action="{{ ('favoritestations') }}" method="get">
         <button class="btn btn-outline-dark" type="submit">Mes stations préférées</button>
     </form>
 
