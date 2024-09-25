@@ -23,7 +23,7 @@ class HomeController extends AbstractController
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_POSTFIELDS => "",
             CURLOPT_SSL_VERIFYPEER => false
-            //Nous récupérons les données du fichier json
+            //Nous récupérons les données du fichier jsono
         ]);
         $response = curl_exec($curl); //elles sont donc stockées dans response
         $err = curl_error($curl);
