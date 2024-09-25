@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     {
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_information.json",
+            CURLOPT_URL => "http://localhost:9042/api/stations",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 20,
@@ -34,7 +34,7 @@ class HomeController extends AbstractController
         //Le même processsus pour le fichier json suivant
         $curl2 = curl_init();
         curl_setopt_array($curl2, [
-            CURLOPT_URL => "https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_status.json",
+            CURLOPT_URL => "http://localhost:9042/api/stations/status",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 20,

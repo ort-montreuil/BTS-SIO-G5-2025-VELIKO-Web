@@ -26,18 +26,18 @@
         var markers = L.markerClusterGroup();
 
         // parcourir le 1er fichier json pour afficher les marqueurs
-        {% for station in response.data.stations %}
+        {% for station in response %}
         var latitude = '{{ station.lat }}';
         var longitude = '{{ station.lon }}';
         var marker = L.marker([latitude, longitude]);
 
         // parcourir le 2ᵉ fichier json pour récupérer des informations supplémentaires
-        {% for st in response2.data.stations %}
+        {% for st in response2 %}
         {% if st.station_id == station.station_id %}
         marker.bindPopup('<form action="/favoritestations" method="post">' +
             "Nom : {{ station.name }}" +
             "<input type='hidden' id='nomStations' name='nomStations' value='{{ station.name }}'>" +
-            " <br> Nombres vélos total : {{ st.numBikesAvailable }}" +
+            " <br> Nombres vélos total : {{ st.num_bikes_available }}" +
             " <br> Nombre vélos électriques : {{ st.num_bikes_available_types[1].ebike }}" +
             "<br> Nombre de vélos mécaniques : {{ st.num_bikes_available_types[0].mechanical }}" +
             "<input type='hidden' id='idStations' name='idStations' value='{{ station.station_id }}'>" +
