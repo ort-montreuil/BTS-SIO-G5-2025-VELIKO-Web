@@ -31,6 +31,7 @@
         var longitude = '{{ station.lon }}';
         var marker = L.marker([latitude, longitude]);
 
+
         // parcourir le 2ᵉ fichier json pour récupérer des informations supplémentaires
         {% for st in response2 %}
         {% if st.station_id == station.station_id %}
@@ -43,6 +44,12 @@
             "<input type='hidden' id='idStations' name='idStations' value='{{ station.station_id }}'>" +
             "<br>" +
             '<button type="submit" id="favori" name="favori">Ajouter au favori</button></form>');
+        marker.on('mouseover', function (e) {
+            this.openPopup();
+        });
+
+
+
         markers.addLayer(marker);
         {% endif %}
         {% endfor %}
@@ -51,6 +58,8 @@
         mymap.addLayer(markers);
 
     </script>
+
+
 
     <button class="btn btn-outline-dark" id="geolocate">Géolocalisez-moi</button>
     <script>
