@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Liste des paramètres</h3>
+                <ul class="list-group" id="parametre-list">
+                    {% for parametre in parametres %}
+                        <li class="list-group-item parametre-item" data-id="{{ parametre.id }}">{{ parametre.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-8" id="parametre-details">
+                <h3>Détails</h3>
+                <p>Sélectionnez un paramètre pour afficher ses détails.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const parametreItems = document.querySelectorAll('.parametre-item');
+        const parametreDetails = document.getElementById('parametre-details');
+
+        parametreItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const parametreId = this.getAttribute('data-id');
+                // Appelle une fonction pour charger les détails en fonction de l'ID
+                loadParametreDetails(parametreId);
+            });
+        });
+
+        function loadParametreDetails(id) {
+            // Remplacer le contenu de la section de détails
+            // Tu pourrais également faire une requête AJAX pour récupérer les détails si nécessaire
+            let detailsHtml = '';
+
+            switch (id) {
+                case '1':
+                    detailsHtml = '<h3>Changer d\'attribut</h3><p>Détails sur le changement d\'attribut...</p>';
+                    break;
+                case '2':
+                    detailsHtml = '<h3>Changer de mot de passe</h3><p>Détails sur le changement de mot de passe...</p>';
+                    break;
+                case '3':
+                    detailsHtml = '<h3>Changer de thème</h3><p>Détails sur le changement de thème...</p>';
+                    break;
+                case '4':
+                    detailsHtml = '<h3>À propos</h3><p>Détails sur l\'application...</p>';
+                    break;
+                default:
+                    detailsHtml = '<p>Sélectionnez un paramètre pour afficher ses détails.</p>';
+            }
+
+            parametreDetails.innerHTML = detailsHtml;
+        }
+    </script>
+
+{% endblock %}

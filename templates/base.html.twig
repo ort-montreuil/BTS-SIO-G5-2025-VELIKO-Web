@@ -10,20 +10,22 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <img src="{{ asset('images/3f0685e1-8d79-4188-94ce-fde1ba26dae8-removebg-preview.png') }}" alt="Image description" width="100px" height="100px">
+            <img src="{{ asset('images/logoVeliko.png') }}" alt="Image description" width="100px" height="100px">
             <a class="navbar-brand" href="/">Veliko</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Carte</a>
                     </li>
-                    {% if 'home' in app.request.get('_route')  %}
-                    <li class="nav-item">
-                        <button class="nav-link" id="geolocate">Géolocalisez-moi</button>
-                    </li>
+                    {% if 'home' in app.request.get('_route') %}
+                        <li class="nav-item">
+                            <button class="nav-link" id="geolocate">Géolocalisez-moi</button>
+                        </li>
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="/register">S'inscrire</a>
@@ -31,16 +33,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Se connecter</a>
                     </li>
-{#                    <form action="{{ ('compte') }}" method="get">#}
-{#                        <button class="btn btn-outline-dark" type="submit">Espace compte</button>#}
-{#                    </form>#}
-{#                    <form action="{{ ('favoritestations') }}" method="get">#}
-{#                        <button class="btn btn-outline-dark" type="submit">Mes stations préférées</button>#}
-{#                    </form>#}
+                </ul>
+
+                <!-- Logo Paramètres complètement à droite -->
+                <ul class="navbar-nav">
+                    <li class="nav-item ms-auto">
+                        <a class="nav-link" href="/parametre">
+                            <img src="{{ asset('images/parametrelogo.png') }}" alt="Paramètres" width="50" height="50">
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
+
 </header>
 <body>
 <div class="container-fluid">
