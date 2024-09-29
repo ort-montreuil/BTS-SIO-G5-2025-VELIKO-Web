@@ -10,7 +10,8 @@
                 <ul class="list-group" id="parametre-list">
                     {% for parametre in parametres %}
                         <li class="list-group-item">
-                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : '')) }) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : '')) }) }}"
+                               style="text-decoration: none; color: inherit;">
                                 {{ parametre.name }}
                             </a>
                         </li>

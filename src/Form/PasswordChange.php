@@ -19,7 +19,7 @@ class PasswordChange extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter your current password',
+                        'message' => 'Veuillez entrer votre mot de passe actuel',
                     ]),
                 ],
             ])
@@ -27,11 +27,11 @@ class PasswordChange extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a new password',
+                        'message' => 'Veuillez entrer un nouveau mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your new password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre nouveau mot de passe doit comporter au moins {{ limit }} caractères',
                         'max' => 50,
                     ]),
                 ],
