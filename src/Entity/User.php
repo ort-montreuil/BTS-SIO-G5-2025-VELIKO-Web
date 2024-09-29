@@ -19,6 +19,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $resetToken = null;
+
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -57,11 +60,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $verified = false; // Propriété pour vérifier si l'utilisateur est vérifié
-
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
 
     public function getEmail(): ?string
     {
