@@ -30,7 +30,6 @@ class AppFixtures extends Fixture
         $user->setEmail("user-admin-@gmail.dev");
         $user->setPassword($this->hasher->hashPassword($user, "password"));
         $user->setRoles(["ROLE_ADMIN"]);
-        $user->setUsername("user-admin");
         $user->setNom("nom-admin");
         $user->setPrenom("prenom-admin");
         $user->setDateNaissance(new \DateTime());
@@ -45,7 +44,6 @@ class AppFixtures extends Fixture
             $user->setEmail("user-$i@gmail.dev");
             $user->setPassword($this->hasher->hashPassword($user, "password"));
             $user->setRoles(["ROLE_USER"]);
-            $user->setUsername("user-$i");
             $user->setNom("nom-$i");
             $user->setPrenom("prenom-$i");
             $user->setDateNaissance(new \DateTime());
