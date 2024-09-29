@@ -25,6 +25,8 @@ class ParametreController extends AbstractController
         ];
 
         $form = null;
+        $showLogoutConfirmation = false;
+
         if ($request->query->get('action') === 'changer-attribut') {
             $user = $this->getUser();
             $form = $this->createFormBuilder($user)
@@ -62,11 +64,14 @@ class ParametreController extends AbstractController
                     $this->addFlash('error', 'L\'ancien mot de passe est incorrect.');
                 }
             }
+        } elseif ($request->query->get('action') === 'deconnexion') {
+            $showLogoutConfirmation = true;
         }
 
         return $this->render('parametre/index.html.twig', [
             'parametres' => $parametres,
             'form' => $form ? $form->createView() : null,
+            'showLogoutConfirmation' => $showLogoutConfirmation,
         ]);
     }
 }

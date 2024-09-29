@@ -10,7 +10,7 @@
                 <ul class="list-group" id="parametre-list">
                     {% for parametre in parametres %}
                         <li class="list-group-item">
-                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : '') }) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : '')) }) }}" style="text-decoration: none; color: inherit;">
                                 {{ parametre.name }}
                             </a>
                         </li>
@@ -26,15 +26,15 @@
                     </div>
                 {% endfor %}
                 {% if form is not null %}
-                    {% if app.request.query.get('action') == 'changer-attribut' %}
-                        <h3>Changer d'Attribut</h3>
-                    {% elseif app.request.query.get('action') == 'changer-mot-de-passe' %}
-                        <h3>Changer de Mot de Passe</h3>
-                    {% endif %}
                     <div id="form-container">
                         {{ form_start(form) }}
                         {{ form_widget(form) }}
                         {{ form_end(form) }}
+                    </div>
+                {% elseif showLogoutConfirmation %}
+                    <div id="form-container">
+                        <p>Voulez-vous vraiment vous déconnecter ?</p>
+                        <a href="{{ path('app_logout') }}" class="btn btn-danger mt-3">Déconnexion</a>
                     </div>
                 {% else %}
                     <h3>Détails</h3>
