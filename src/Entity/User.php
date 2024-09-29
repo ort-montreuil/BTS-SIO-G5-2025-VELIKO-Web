@@ -199,10 +199,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setLastPasswordChanged(\DateTimeInterface $last_password_changed): static
     {
-        $this->last_password_changed = $last_password_changed;
+        $this->last_password_changed = new \DateTime();
 
         return $this;
     }
+
 
     public function getVille(): ?string
     {
