@@ -9,90 +9,27 @@
                 <h3>Liste des paramètres</h3>
                 <ul class="list-group" id="parametre-list">
                     {% for parametre in parametres %}
-                        <li class="list-group-item parametre-item" data-id="{{ parametre.id }}">{{ parametre.name }}</li>
+                        <li class="list-group-item">
+                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : '' }) }}" style="text-decoration: none; color: inherit;">
+                                {{ parametre.name }}
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
             <div class="col-md-8" id="parametre-details">
-                <h3>Détails</h3>
-                <p>Sélectionnez un paramètre pour afficher ses détails.</p>
+                {% if form is not null %}
+                    <h3>Changer d'Attribut</h3>
+                    <div id="form-container">
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                {% else %}
+                    <h3>Détails</h3>
+                    <p>Sélectionnez un paramètre pour afficher ses détails.</p>
+                {% endif %}
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Récupérer le thème du localStorage ou définir un thème par défaut
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', currentTheme); // Appliquer le thème
-
-            const parametreItems = document.querySelectorAll('.parametre-item');
-            const parametreDetails = document.getElementById('parametre-details');
-
-            parametreItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const parametreId = this.getAttribute('data-id');
-                    loadParametreDetails(parametreId);
-                });
-            });
-
-            function loadParametreDetails(id) {
-                let detailsHtml = '';
-
-                switch (id) {
-                    case '1':
-                        detailsHtml = '<h3>Changer d\'attribut</h3><p>Détails sur le changement d\'attribut...</p>';
-                        break;
-                    case '2':
-                        detailsHtml = '<h3>Changer de mot de passe</h3><p>Détails sur le changement de mot de passe...</p>';
-                        break;
-                    case '3':
-                        detailsHtml = '<h3>Changer de thème</h3><p>Thème actuel : <span id="current-theme">' + currentTheme + '</span></p>';
-                        detailsHtml += '<button id="toggle-theme">Basculer le thème</button>'; // Bouton pour changer le thème
-                        break;
-                    case '4':
-                        detailsHtml = '<h3>À propos</h3><p>Détails sur l\'application...</p>';
-                        break;
-                    default:
-                        detailsHtml = '<p>Sélectionnez un paramètre pour afficher ses détails.</p>';
-                }
-
-                parametreDetails.innerHTML = detailsHtml;
-
-                // Écouteur pour le bouton de changement de thème
-                const toggleThemeButton = document.getElementById('toggle-theme');
-                if (toggleThemeButton) {
-                    toggleThemeButton.onclick = () => {
-                        const newTheme = currentTheme === 'light' ? 'dark' : 'light'; // Changer le thème
-                        document.documentElement.setAttribute('data-theme', newTheme);
-                        localStorage.setItem('theme', newTheme); // Sauvegarder la préférence
-                        document.getElementById('current-theme').textContent = newTheme; // Mettre à jour le texte affiché
-                    };
-                }
-            }
-        });
-    </script>
-
-    <style>
-        :root {
-            --background-color: #ffffff;
-            --text-color: #000000;
-        }
-
-        [data-theme="dark"] {
-            --background-color: #121212;
-            --text-color: #ffffff;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-
-        /* Ajout de styles pour la liste des paramètres */
-        .list-group-item {
-            cursor: pointer;
-        }
-    </style>
-
 {% endblock %}
