@@ -74,6 +74,7 @@ class RegistrationController extends AbstractController
     {
         return $this->render('registration/check_email.html.twig');
     }
+
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {

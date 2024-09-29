@@ -42,7 +42,7 @@
         let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/;
 
         // Validation du mot de passe lors de la saisie
-        pwd.addEventListener("keyup", function() {
+        pwd.addEventListener("keyup", function () {
             if (!regex.test(pwd.value)) {
                 pwd.setCustomValidity("Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.");
                 pwd.reportValidity();
@@ -52,7 +52,7 @@
         });
 
         // Validation du formulaire avant soumission
-        document.getElementById("submit").addEventListener("click", function(event) {
+        document.getElementById("submit").addEventListener("click", function (event) {
             if (!regex.test(pwd.value)) {
                 event.preventDefault(); // Empêche la soumission si le mot de passe est invalide
                 pwd.setCustomValidity("Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.");

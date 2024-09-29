@@ -54,7 +54,6 @@
         });
 
 
-
         markers.addLayer(marker);
         {% endif %}
         {% endfor %}
@@ -63,11 +62,11 @@
         mymap.addLayer(markers);
 
     </script>
-{#    <form action="{{ ('compte') }}" method="get">#}
-{#        <button class="btn btn-outline-dark" type="submit">Espace compte</button>#}
-{#    </form>#}
-{#    <form action="{{ ('favoritestations') }}" method="get">#}
-{#        <button class="btn btn-outline-dark" type="submit">Mes stations préférées</button>#}
-{#    </form>#}
+    {#    <form action="{{ ('compte') }}" method="get"> #}
+    {#        <button class="btn btn-outline-dark" type="submit">Espace compte</button> #}
+    {#    </form> #}
+    {#    <form action="{{ ('favoritestations') }}" method="get"> #}
+    {#        <button class="btn btn-outline-dark" type="submit">Mes stations préférées</button> #}
+    {#    </form> #}
 
 {% endblock %}

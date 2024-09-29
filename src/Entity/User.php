@@ -60,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $verified = false; // Propriété pour vérifier si l'utilisateur est vérifié
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,12 +98,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
-     * @see UserInterface
      * @return list<string>
+     * @see UserInterface
      */
     public function getRoles(): array
     {
@@ -211,6 +212,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->last_password_changed;
     }
+
     public function setLastPasswordChanged(\DateTimeInterface $last_password_changed): self
     {
         $this->last_password_changed = $last_password_changed;
