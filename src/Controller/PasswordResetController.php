@@ -56,15 +56,28 @@ class PasswordResetController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            // Récupérer et hacher le nouveau mot de passe
             $newPassword = $request->request->get('password');
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT); // Hachage du mot de passe
+            $oldPassword = $user->getPassword();
+
+            // Vérifier que le nouveau mot de passe est différent de l'ancien
+            if (password_verify($newPassword, $oldPassword)) {
+                $this->addFlash('error', 'Le nouveau mot de passe doit être différent de l\'ancien.');
+                return $this->render('security/reset_password.html.twig', ['token' => $token]);
+            }
+
+            // Vérifier que le nouveau mot de passe respecte les critères
+            if (!preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/', $newPassword)) {
+                $this->addFlash('error', 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.');
+                return $this->render('security/reset_password.html.twig', ['token' => $token]);
+            }
+
+            // Hacher le nouveau mot de passe
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
             // Mettre à jour l'utilisateur
             $user->setPassword($hashedPassword);
             $user->setResetToken(null); // Supprime le token
             $entityManager->flush(); // Sauvegarde en base de données
-
 
             return $this->redirectToRoute('app_login');
         }
