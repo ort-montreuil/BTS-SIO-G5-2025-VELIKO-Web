@@ -110,6 +110,8 @@ class ParametreController extends AbstractController
             'parametres' => $parametres,
             'form' => $form ? $form->createView() : null,
             'showLogoutConfirmation' => $showLogoutConfirmation,
+            'action' => $action,
         ]);
+
     }
 }

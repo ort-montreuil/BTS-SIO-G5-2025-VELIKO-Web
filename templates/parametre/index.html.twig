@@ -26,20 +26,28 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
+
                 {% if form is not null %}
-                    <h3>Information</h3>
-                    <p>Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.</p>
-                    <div id="form-container">
-                        {{ form_start(form, {'method': 'POST', 'action': path('app_parametre', {'action': 'supprimer-compte'})}) }}
-                        {{ form_widget(form) }}
-                        {{ form_end(form) }}
-                    </div>
+                    {% if action == 'changer-attribut' %}
+                        <h3>Profil :</h3>
+                    {% elseif action == 'changer-mot-de-passe' %}
+                        <h3>Changement de mot de passe :</h3>
+                    {% elseif action == 'supprimer-compte' %}
+                        <h3>Information :</h3>
+                        <p>Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.</p>
+                    {% endif %}
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+
                 {% elseif showLogoutConfirmation %}
                     <h3>Information</h3>
                     <p>Voulez-vous vraiment vous déconnecter ?</p>
                     <div id="form-container">
                         <a href="{{ path('app_logout') }}" class="btn btn-danger mt-3">Déconnexion</a>
                     </div>
+
                 {% else %}
                     <h3>Information</h3>
                     <p>Sélectionnez un paramètre pour afficher ses détails.</p>
