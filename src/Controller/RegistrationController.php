@@ -31,6 +31,17 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('plainPassword')->getData();
+
+            // Vérification des critères du mot de passe
+            if (strlen($plainPassword) < 12 ||
+                !preg_match('/[A-Z]/', $plainPassword) ||
+                !preg_match('/[0-9]/', $plainPassword) ||
+                !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $plainPassword)) {
+                // Ajouter un message flash d'erreur et rediriger vers le formulaire d'inscription
+                $this->addFlash('error', 'Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.');
+                return $this->redirectToRoute('app_register');
+            }
+
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setLastPasswordChanged(new \DateTime());
 
@@ -56,6 +67,7 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
+
 
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response

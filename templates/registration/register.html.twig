@@ -7,9 +7,15 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Inscription :</h1>
+    {% for flash_success in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">{{ flash_success }}</div>
+    {% endfor %}
 
-    {{ form_errors(registrationForm) }}
+    {% for flash_error in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <h1>Inscription :</h1>
 
     {{ form_start(registrationForm) }}
     {{ form_row(registrationForm.email) }}
@@ -20,10 +26,40 @@
     {{ form_row(registrationForm.code_postal) }}
     {{ form_row(registrationForm.ville) }}
     {{ form_row(registrationForm.plainPassword, {
-        label: 'Password'
+        'label': 'Mot de passe',
+        'attr': {
+            'id': 'pwd',
+            'placeholder': 'Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial et 1 chiffre.'
+        }
     }) }}
     {{ form_row(registrationForm.agreeTerms) }}
 
-    <button type="submit" class="btn btn-lg btn-primary">Register</button>
+    <button type="submit" id="submit" class="btn btn-lg btn-primary">S'inscrire</button>
     {{ form_end(registrationForm) }}
+
+    <script>
+        let pwd = document.getElementById("pwd");
+        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/;
+
+        // Validation du mot de passe lors de la saisie
+        pwd.addEventListener("keyup", function() {
+            if (!regex.test(pwd.value)) {
+                pwd.setCustomValidity("Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.");
+                pwd.reportValidity();
+            } else {
+                pwd.setCustomValidity("");
+            }
+        });
+
+        // Validation du formulaire avant soumission
+        document.getElementById("submit").addEventListener("click", function(event) {
+            if (!regex.test(pwd.value)) {
+                event.preventDefault(); // Empêche la soumission si le mot de passe est invalide
+                pwd.setCustomValidity("Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.");
+                pwd.reportValidity();
+            } else {
+                pwd.setCustomValidity(""); // Réinitialise le message d'erreur
+            }
+        });
+    </script>
 {% endblock %}
