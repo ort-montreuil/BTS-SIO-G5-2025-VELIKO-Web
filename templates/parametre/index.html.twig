@@ -10,8 +10,7 @@
                 <ul class="list-group" id="parametre-list">
                     {% for parametre in parametres %}
                         <li class="list-group-item">
-                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : '' }) }}"
-                               style="text-decoration: none; color: inherit;">
+                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : '') }) }}" style="text-decoration: none; color: inherit;">
                                 {{ parametre.name }}
                             </a>
                         </li>
@@ -19,8 +18,19 @@
                 </ul>
             </div>
             <div class="col-md-8" id="parametre-details">
+                {% for label, messages in app.flashes %}
+                    <div class="alert alert-{{ label }}">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
                 {% if form is not null %}
-                    <h3>Changer d'Attribut</h3>
+                    {% if app.request.query.get('action') == 'changer-attribut' %}
+                        <h3>Changer d'Attribut</h3>
+                    {% elseif app.request.query.get('action') == 'changer-mot-de-passe' %}
+                        <h3>Changer de Mot de Passe</h3>
+                    {% endif %}
                     <div id="form-container">
                         {{ form_start(form) }}
                         {{ form_widget(form) }}

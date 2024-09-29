@@ -2,12 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-
-// Assurez-vous que vous avez importé votre entité User
-use App\Form\UserType;
-
-// Assurez-vous d'avoir créé un formulaire UserType
+use App\Form\PasswordChange;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,11 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ParametreController extends AbstractController
 {
     #[Route('/parametre', name: 'app_parametre')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $parametres = [
             ['id' => 1, 'name' => 'Changer d\'attribut'],
@@ -47,6 +43,24 @@ class ParametreController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('success', 'Vos informations ont été mises à jour avec succès.');
                 return $this->redirectToRoute('app_parametre');
+            }
+        } elseif ($request->query->get('action') === 'changer-mot-de-passe') {
+            $form = $this->createForm(PasswordChange::class);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user = $this->getUser();
+                $oldPassword = $form->get('entrezVotreAncienMotDePasse')->getData();
+                $newPassword = $form->get('entrezVotreNouveauMotDePasse')->getData();
+
+                if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
+                    $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Votre mot de passe a été changé avec succès.');
+                    return $this->redirectToRoute('app_parametre');
+                } else {
+                    $this->addFlash('error', 'L\'ancien mot de passe est incorrect.');
+                }
             }
         }
 
