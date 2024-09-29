@@ -62,15 +62,27 @@ class ParametreController extends AbstractController
                 $oldPassword = $form->get('entrezVotreAncienMotDePasse')->getData();
                 $newPassword = $form->get('entrezVotreNouveauMotDePasse')->getData();
 
+                // Vérification de l'ancien mot de passe
                 if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
-                    $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
-                    $entityManager->flush();
-                    $this->addFlash('success', 'Votre mot de passe a été changé avec succès.');
-                    return $this->redirectToRoute('app_parametre');
+                    // Vérification des conditions du nouveau mot de passe
+                    $passwordConditions = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/';
+
+                    if (!preg_match($passwordConditions, $newPassword)) {
+                        $this->addFlash('error', 'Le nouveau mot de passe doit contenir au moins 12 caractères, 1 majuscule, 1 chiffre, et 1 caractère spécial.');
+                    } elseif ($oldPassword === $newPassword) {
+                        $this->addFlash('error', 'Le nouveau mot de passe doit être différent de l\'ancien mot de passe.');
+                    } else {
+                        // Si toutes les conditions sont remplies
+                        $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
+                        $entityManager->flush();
+                        $this->addFlash('success', 'Votre mot de passe a été changé avec succès.');
+                        return $this->redirectToRoute('app_parametre');
+                    }
                 } else {
                     $this->addFlash('error', 'L\'ancien mot de passe est incorrect.');
                 }
             }
+
         } elseif ($action === 'deconnexion') {
             $showLogoutConfirmation = true;
         } elseif ($action === 'supprimer-compte') {
