@@ -22,8 +22,6 @@ class RegistrationController extends AbstractController
     {
     }
 
-    // src/Controller/RegistrationController.php
-
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
@@ -39,9 +37,19 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Your email address has been verified.');
+            // Envoyer un e-mail de vérification
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('no-reply@example.com', 'Feixiao Mail Bot'))
+                    ->to($user->getEmail())
+                    ->subject('Veuillez confirmer votre adresse e-mail')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
 
-            return $this->redirectToRoute('app_register');
+            $this->addFlash('success', 'Un e-mail de confirmation a été envoyé. Veuillez vérifier votre boîte de réception.');
+
+            // Redirection vers la page de confirmation
+            return $this->redirectToRoute('app_check_email');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -49,20 +57,16 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-
-
-
-
-
-
-
-
+    #[Route('/check-email', name: 'app_check_email')]
+    public function checkEmail(): Response
+    {
+        return $this->render('registration/check_email.html.twig');
+    }
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
             /** @var User $user */
             $user = $this->getUser();
@@ -72,6 +76,12 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_register');
         }
+
+        $this->addFlash('success', 'Your email address has been verified.');
+
+        // Redirection vers la page de connexion avec un paramètre de requête
+        return $this->redirectToRoute('app_check_email', ['verified' => 'true']);
+
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
