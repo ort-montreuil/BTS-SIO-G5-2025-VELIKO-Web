@@ -25,8 +25,7 @@ class UserType extends AbstractType
             ->add('last_password_changed', null, [
                 'widget' => 'single_text'
             ])
-            ->add('ville')
-        ;
+            ->add('ville');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

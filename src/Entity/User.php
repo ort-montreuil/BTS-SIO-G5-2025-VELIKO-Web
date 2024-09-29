@@ -79,12 +79,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
-     * @see UserInterface
      * @return list<string>
+     * @see UserInterface
      */
     public function getRoles(): array
     {

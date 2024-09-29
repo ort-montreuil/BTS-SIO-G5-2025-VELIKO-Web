@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\User; // Assurez-vous que vous avez importé votre entité User
-use App\Form\UserType; // Assurez-vous d'avoir créé un formulaire UserType
+use App\Entity\User;
+
+// Assurez-vous que vous avez importé votre entité User
+use App\Form\UserType;
+
+// Assurez-vous d'avoir créé un formulaire UserType
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
