@@ -29,7 +29,7 @@ class StationFavorisController extends AbstractController
         $query = $request->query->get('query');
         if ($query) {
             // Filtrer les stations en fonction de la requête
-            $stations = array_filter($stations, function($station) use ($query) {
+            $stations = array_filter($stations, function ($station) use ($query) {
                 return stripos($station['name'], $query) !== false; // Ignorer la casse
             });
         }
