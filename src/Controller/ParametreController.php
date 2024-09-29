@@ -5,30 +5,38 @@ namespace App\Controller;
 use App\Form\PasswordChange;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ParametreController extends AbstractController
 {
-    #[Route('/parametre', name: 'app_parametre')]
-    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    #[Route('/parametre/{action}', name: 'app_parametre', defaults: ['action' => null])]
+    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, ?string $action, TokenStorageInterface $tokenStorage, SessionInterface $session): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $parametres = [
             ['id' => 1, 'name' => 'Changer d\'attribut'],
             ['id' => 2, 'name' => 'Changer de mot de passe'],
             ['id' => 3, 'name' => 'Déconnexion'],
-            ['id' => 4, 'name' => 'À propos'],
+            ['id' => 4, 'name' => 'Supprimer mon compte'],
+            ['id' => 5, 'name' => 'À propos'],
         ];
 
         $form = null;
         $showLogoutConfirmation = false;
 
-        if ($request->query->get('action') === 'changer-attribut') {
-            $user = $this->getUser();
+        if ($action === 'changer-attribut') {
             $form = $this->createFormBuilder($user)
                 ->add('nom', TextType::class, ['data' => $user->getNom()])
                 ->add('prenom', TextType::class, ['data' => $user->getPrenom()])
@@ -46,12 +54,11 @@ class ParametreController extends AbstractController
                 $this->addFlash('success', 'Vos informations ont été mises à jour avec succès.');
                 return $this->redirectToRoute('app_parametre');
             }
-        } elseif ($request->query->get('action') === 'changer-mot-de-passe') {
+        } elseif ($action === 'changer-mot-de-passe') {
             $form = $this->createForm(PasswordChange::class);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $user = $this->getUser();
                 $oldPassword = $form->get('entrezVotreAncienMotDePasse')->getData();
                 $newPassword = $form->get('entrezVotreNouveauMotDePasse')->getData();
 
@@ -64,8 +71,39 @@ class ParametreController extends AbstractController
                     $this->addFlash('error', 'L\'ancien mot de passe est incorrect.');
                 }
             }
-        } elseif ($request->query->get('action') === 'deconnexion') {
+        } elseif ($action === 'deconnexion') {
             $showLogoutConfirmation = true;
+        } elseif ($action === 'supprimer-compte') {
+            $form = $this->createFormBuilder()
+                ->add('password', PasswordType::class, [
+                    'label' => 'Entrez votre mot de passe pour confirmer',
+                    'required' => true,
+                ])
+                ->add('supprimer', SubmitType::class, [
+                    'label' => 'Supprimer mon compte',
+                    'attr' => ['class' => 'btn btn-danger']
+                ])
+                ->getForm();
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $password = $form->get('password')->getData();
+
+                if ($passwordHasher->isPasswordValid($user, $password)) {
+                    $entityManager->remove($user);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
+
+                    // Log out the user
+                    $tokenStorage->setToken(null);
+                    $session->invalidate();
+
+                    return $this->redirectToRoute('app_logout');
+                } else {
+                    $this->addFlash('error', 'Le mot de passe est incorrect.');
+                }
+            }
         }
 
         return $this->render('parametre/index.html.twig', [

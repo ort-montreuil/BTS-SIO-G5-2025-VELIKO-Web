@@ -10,7 +10,7 @@
                 <ul class="list-group" id="parametre-list">
                     {% for parametre in parametres %}
                         <li class="list-group-item">
-                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : '')) }) }}"
+                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : (parametre.id == 4 ? 'supprimer-compte' : ''))) }) }}"
                                style="text-decoration: none; color: inherit;">
                                 {{ parametre.name }}
                             </a>
@@ -27,18 +27,21 @@
                     </div>
                 {% endfor %}
                 {% if form is not null %}
+                    <h3>Information</h3>
+                    <p>Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.</p>
                     <div id="form-container">
-                        {{ form_start(form) }}
+                        {{ form_start(form, {'method': 'POST', 'action': path('app_parametre', {'action': 'supprimer-compte'})}) }}
                         {{ form_widget(form) }}
                         {{ form_end(form) }}
                     </div>
                 {% elseif showLogoutConfirmation %}
+                    <h3>Information</h3>
+                    <p>Voulez-vous vraiment vous déconnecter ?</p>
                     <div id="form-container">
-                        <p>Voulez-vous vraiment vous déconnecter ?</p>
                         <a href="{{ path('app_logout') }}" class="btn btn-danger mt-3">Déconnexion</a>
                     </div>
                 {% else %}
-                    <h3>Détails</h3>
+                    <h3>Information</h3>
                     <p>Sélectionnez un paramètre pour afficher ses détails.</p>
                 {% endif %}
             </div>
