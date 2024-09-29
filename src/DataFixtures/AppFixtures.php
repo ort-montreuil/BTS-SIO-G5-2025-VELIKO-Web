@@ -37,6 +37,7 @@ class AppFixtures extends Fixture
         $user->setCodePostal("92100");
         $user->setLastPasswordChanged(new \DateTime());
         $user->setVille("ville-admin");
+        $user->setVerified(false);
         $manager->persist($user);
         for ($i=1; $i<=10; $i++)
         {

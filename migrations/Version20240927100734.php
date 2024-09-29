@@ -20,7 +20,7 @@ final class Version20240927100734 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user DROP username');
+//        $this->addSql('ALTER TABLE user DROP username');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON user (email)');
     }
 
@@ -28,6 +28,6 @@ final class Version20240927100734 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP INDEX UNIQ_IDENTIFIER_EMAIL ON user');
-        $this->addSql('ALTER TABLE user ADD username VARCHAR(180) NOT NULL');
+//        $this->addSql('ALTER TABLE user ADD username VARCHAR(180) NOT NULL');
     }
 }
