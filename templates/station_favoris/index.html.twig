@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Station Favoris{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <nav class="navbar navbar-expand-lg" id="navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"></a>
+                <form class="d-flex" method="GET" action="{{ path('app_station_favoris') }}">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une station" aria-label="Rechercher">
+                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                    <button class="btn btn-outline-danger ms-2" type="reset" onclick="window.location.href='{{ path('app_station_favoris') }}';">Réinitialiser</button>
+                </form>
+            </div>
+        </nav>
+
+        <h1>Liste des stations de vélos</h1>
+        <form method="POST" action="{{ path('app_station_favoris') }}">
+            <ul>
+                {% for station in stations %}
+                    <li>
+                        <input type="checkbox" name="stations[]" id="station_{{ station.name }}">
+                        <label for="station_{{ station.name }}">{{ station.name }}</label>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="submit">Ajouter les stations sélectionnées</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const navbar = document.getElementById('navbar');
+
+            // Assurez-vous que le thème actuel est appliqué à la navbar
+            const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+            if (currentTheme === 'dark') {
+                navbar.classList.add('navbar-dark', 'bg-dark');
+            } else {
+                navbar.classList.add('navbar-light', 'bg-light');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                if (navbar.classList.contains('navbar-light')) {
+                    navbar.classList.remove('navbar-light', 'bg-light');
+                    navbar.classList.add('navbar-dark', 'bg-dark');
+                } else {
+                    navbar.classList.remove('navbar-dark', 'bg-dark');
+                    navbar.classList.add('navbar-light', 'bg-light');
+                }
+            });
+        });
+    </script>
+{% endblock %}
