@@ -23,8 +23,8 @@
             <ul>
                 {% for station in stations %}
                     <li>
-                        <input type="checkbox" name="stations[]" id="station_{{ station.name }}">
-                        <label for="station_{{ station.name }}">{{ station.name }}</label>
+                        <input type="checkbox" name="stations[]" value="{{ station.station_id }}" id="station_{{ station.station_id }}">
+                        <label for="station_{{ station.station_id }}">{{ station.name }}</label>
                     </li>
                 {% endfor %}
             </ul>
