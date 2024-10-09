@@ -59,7 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $ville = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $verified = false; // Propriété pour vérifier si l'utilisateur est vérifié
+    private bool $verified = false;
+
+    #[ORM\Column(length: 255)]
+    private ?string $test = null; // Propriété pour vérifier si l'utilisateur est vérifié
 
     public function getId(): ?int
     {
@@ -242,6 +245,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $verified): static
     {
         $this->verified = $verified;
+
+        return $this;
+    }
+
+    public function getTest(): ?string
+    {
+        return $this->test;
+    }
+
+    public function setTest(string $test): static
+    {
+        $this->test = $test;
 
         return $this;
     }

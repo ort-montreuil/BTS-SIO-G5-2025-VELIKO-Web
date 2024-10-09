@@ -13,9 +13,10 @@ class MailController extends AbstractController
     #[Route('/mail', name: 'app_mail')]
     public function index(MailerInterface $mailer): Response
     {
+        $user = $this->getUser();
         $email = (new Email())
             ->from('hello@example.com')
-            ->to('you@example.com')
+            ->to($user->getUserIdentifier().$user->getEmail())
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
