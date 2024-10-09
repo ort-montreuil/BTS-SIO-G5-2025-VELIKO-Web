@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Controller\MesStationsController;
 
 class StationFavorisController extends AbstractController
 {
@@ -21,7 +22,6 @@ class StationFavorisController extends AbstractController
         $this->client = $client;
         $this->entityManager = $entityManager;
     }
-
     #[Route('/station/favoris', name: 'app_station_favoris')]
     public function index(Request $request): Response
     {
@@ -69,10 +69,10 @@ class StationFavorisController extends AbstractController
                 return $this->redirectToRoute('app_station_favoris');
             }
         }
-
         return $this->render('station_favoris/index.html.twig', [
             'controller_name' => 'StationFavorisController',
             'stations' => $stations,
+            'mesStations' =>'MesStationsController',
         ]);
     }
 }

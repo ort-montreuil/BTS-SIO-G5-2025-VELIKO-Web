@@ -59,9 +59,11 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Carte</a>
                     </li>
-                    <li class="nav-item">
-                        <button class="btn btn-link nav-link" id="geolocate">Géolocalisez-moi</button>
-                    </li>
+                    {% if 'home' in app.request.get('_route') %}
+                        <li class="nav-item">
+                            <button class="btn btn-link nav-link" id="geolocate">Géolocalisez-moi</button>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="/register">S'inscrire</a>
                     </li>
