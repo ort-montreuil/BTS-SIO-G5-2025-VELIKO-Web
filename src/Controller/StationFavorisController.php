@@ -37,7 +37,6 @@ class StationFavorisController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $selectedStations = $request->request->all('stations');
-
             if ($selectedStations) {
                 $userEmail = $this->getUser()->getEmail();
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $userEmail]);
@@ -55,12 +54,15 @@ class StationFavorisController extends AbstractController
                     } else {
                         $stationFavoris = new Station();
                         $stationFavoris->setId((int)$stationId); // Ensure the ID is an integer
+
                     }
                     $stationFavoris->setEmailuser($user);
 
                     $this->entityManager->persist($stationFavoris);
+
+                    $this->entityManager->flush();
                 }
-                $this->entityManager->flush();
+
 
                 $this->addFlash('success', 'Stations ajoutées avec succès.');
 
