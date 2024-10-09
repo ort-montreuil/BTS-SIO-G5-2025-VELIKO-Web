@@ -28,14 +28,14 @@
         var markers = L.markerClusterGroup();
 
         // parcourir le 1er fichier json pour afficher les marqueurs
-        {% for station in response %}
+        {% for station in stations_informations %}
         var latitude = '{{ station.lat }}';
         var longitude = '{{ station.lon }}';
         var marker = L.marker([latitude, longitude]);
 
 
         // parcourir le 2ᵉ fichier json pour récupérer des informations supplémentaires
-        {% for st in response2 %}
+        {% for st in stations_statuts %}
         {% if st.station_id == station.station_id %}
         marker.bindPopup('<form action="/favoritestations" method="post">' +
             "Nom : {{ station.name }}" +
@@ -61,12 +61,5 @@
 
         mymap.addLayer(markers);
 
-    </script>
-    {#    <form action="{{ ('compte') }}" method="get"> #}
-    {#        <button class="btn btn-outline-dark" type="submit">Espace compte</button> #}
-    {#    </form> #}
-    {#    <form action="{{ ('favoritestations') }}" method="get"> #}
-    {#        <button class="btn btn-outline-dark" type="submit">Mes stations préférées</button> #}
-    {#    </form> #}
-
+    </script
 {% endblock %}

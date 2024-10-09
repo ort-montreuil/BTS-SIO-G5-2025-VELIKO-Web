@@ -24,11 +24,11 @@ class HomeController extends AbstractController
             CURLOPT_SSL_VERIFYPEER => false
             //Nous récupérons les données du fichier jsono
         ]);
-        $response = curl_exec($curl); //elles sont donc stockées dans response
+        $stations_informations = curl_exec($curl); //elles sont donc stockées dans stations_informations
         $err = curl_error($curl);
         curl_close($curl);
 
-        $response = json_decode($response, true); //nous décodons les données afin qu'elles soient accessibles
+        $stations_informations = json_decode($stations_informations, true); //nous décodons les données afin qu'elles soient accessibles
 
         //Le même processsus pour le fichier json suivant
         $curl2 = curl_init();
@@ -42,17 +42,17 @@ class HomeController extends AbstractController
             CURLOPT_POSTFIELDS => "",
             CURLOPT_SSL_VERIFYPEER => false
         ]);
-        $response2 = curl_exec($curl2);
+        $stations_statuts = curl_exec($curl2);
         $err2 = curl_error($curl2);
         curl_close($curl2);
 
-        $response2 = json_decode($response2, true);
+        $stations_statuts = json_decode($stations_statuts, true);
 
 
         return $this->render('home/index.html.twig', [
             'titre' => 'Carte OpenStreetMap',
-            'response' => $response,
-            'response2' => $response2
+            'stations_informations' => $stations_informations,
+            'stations_statuts' => $stations_statuts
         ]);
     }
 }
