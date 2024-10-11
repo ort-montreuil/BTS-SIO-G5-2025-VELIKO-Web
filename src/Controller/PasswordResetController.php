@@ -31,7 +31,7 @@ class PasswordResetController extends AbstractController
 
                 // Envoyer l'email
                 $email = (new Email())
-                    ->from('no-reply@veliko.com')
+                    ->from($_ENV['MAILER_FROM_ADDRESS'], $_ENV['MAILER_FROM_NAME'])
                     ->to($user->getEmail())
                     ->subject('Réinitialisation du mot de passe')
                     ->html('<p>Pour réinitialiser votre mot de passe, cliquez sur ce lien : <a href="' . $resetUrl . '">Réinitialiser</a></p>');

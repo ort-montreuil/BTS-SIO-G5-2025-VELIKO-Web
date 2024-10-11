@@ -1,6 +1,6 @@
 # Projet Veliko
 
-## Installation
+## Inisialation du projet
 
 ### Etape 1 : installation des dépendances
 
@@ -8,49 +8,8 @@ Installation des dépendances avec composer (vendor)
 ```
 composer install
 ```
-### Etape 2: Installation des packages tiers
-Installation des packages tiers
 
-Installation de l'orm
-```
-composer require orm
-```
-Installation de doctrine
-```
-composer require doctrine
-```
-Bundle pour faire les migrations
-```
-composer require doctrine/doctrine-migrations-bundle
-```
-Doctrine DBAL facilite l'interaction avec des bases de données
-```
-composer require doctrine/dbal
-```
-Installe le composant Form de Symfony, permettant de créer et gérer des formulaires
-```
-composer require form 
-```
-Installe le Maker Bundle de Symfony, fournissant des outils pour générer du code, comme des contrôleurs et des entités
-```
-composer require symfony/maker-bundle --dev
-```
-Installe le bundle de vérification d'email de SymfonyCasts et le composant Mailer de Symfony, permettant d'implémenter facilement la vérification des adresses email dans les applications Symfony.
-```
-composer require symfonycasts/verify-email-bundle symfony/mailer
-```
-
-### Etape 3 : Création des migrations
-Crez une migration pour la base de données
-```
-symfony console make:migration
-```
-executez la migration
-```
-symfony console doctrine:migrations:migrate
-```
-
-### Etape 4 : Créez un mail
+### Etape 2 : Créez un mail
 
 Pour créer un mail
 ```
