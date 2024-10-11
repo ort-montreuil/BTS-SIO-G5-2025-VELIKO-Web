@@ -26,11 +26,17 @@ class MesStationsController extends AbstractController
 
         // Récupérer les stations favorites de l'utilisateur depuis la base de données
         $stationsRepository = $this->entityManager->getRepository(Station::class);
-        $userStations = $stationsRepository->findBy(['emailuser' => $user->getEmail()]);
+        $stations = $stationsRepository->findBy(['emailuser' => $user]);
 
+        // Extraire les IDs des stations
+        $station_id = array_map(function($station) {
+            return $station->getId();
+        }, $stations);
+
+//        $response = $this->client->request('GET', 'http://localhost:9042/api/station/{id}');
         return $this->render('mes_stations/index.html.twig', [
             'controller_name' => 'MesStationsController',
-            'stations' => $userStations,
+            'station_id' => $station_id
         ]);
     }
 }

@@ -9,15 +9,15 @@
             <div class="row">
                 <div class="col-md-4">
                     <h3>Liste des stations</h3>
-                    {% if stations is empty %}
-                        <p>Vous n'avez pris aucune station.</p>
-                    {% else %}
+{#                    {% if stations is empty %}#}
+{#                        <p>Vous n'avez pris aucune station.</p>#}
+{#                    {% else %}#}
                         <ul class="list-group" id="station-list">
-                            {% for station in stations %}
-                                <li class="list-group-item">{{ station.name }}</li>
+                            {% for station in station_id %}
+                                <li class="list-group-item">{{ station }}</li>
                             {% endfor %}
                         </ul>
-                    {% endif %}
+{#                    {% endif %}#}
                     <button class="btn btn-outline-warning" onclick="window.location.href='{{ path('app_station_favoris') }}';">Retourner aux stations favoris</button>
                 </div>
             </div>
