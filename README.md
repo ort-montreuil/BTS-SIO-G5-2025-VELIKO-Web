@@ -6,7 +6,7 @@ Le projet Veliko offre la possibilité d'ajouter des stations de vélos à vos f
 interactive. Il comprend un système de connexion et d'inscription. Parmi ses diverses fonctionnalités, vous trouverez
 des informations sur la météo, la géolocalisation, ainsi que le nombre de vélos disponibles à chaque station.
 
-## Initialisation du projet
+## Initialisation du projet :
 
 - **Cloner le projet**
 
@@ -16,7 +16,7 @@ Cloner le projet depuis le dépôt gitHub :
 git clone git@github.com:ort-montreuil/BTS-SIO-G5-2025-VELIKO-Web.git
 ```
 
-### Etape 1 : installation des dépendances
+### Etape 1 : installation des dépendances :
 
 Installation des dépendances avec composer (vendor)
 
@@ -30,7 +30,7 @@ Pour mettre à jour les dépendances (si besoin)
 composer update
 ```
 
-### Etape 2 : Démarrage du serveur
+### Etape 2 : Démarrage du serveur :
 Dans la console, tapez la commande suivante pour démarrer le serveur :
 
 I) Installation des images Docker
@@ -59,7 +59,7 @@ Si vous voulez arrêter le serveur
 symfony server:stop
 ```
 
-### Structure du projet
+### Structure du projet :
 
 ```
 .
@@ -87,7 +87,7 @@ symfony server:stop
 
 ```
 
-### Technologies utilisées
+### Technologies utilisées :
 
 Dans ce projet, plusieurs technologies ont été utilisées :
 
@@ -103,7 +103,7 @@ Dans ce projet, plusieurs technologies ont été utilisées :
 - Utilisation de [PHP](#php) pour le développement
 - Utilisation d'une base de données [MySQL](#mysql)
 
-### Fonctionnalités
+### Fonctionnalités :
 
 - **Inscription et connexion**
 - **Ajout de stations de vélos à vos favoris**
@@ -202,4 +202,4 @@ Pour nous contacter :
 
 Aaron Edery : [GitHub](https://github.com/Aedery16-11)
 
-Noam Baroukh :[GitHub](https://github.com/N-Baroukh)
+Noam Baroukh : [GitHub](https://github.com/N-Baroukh)
