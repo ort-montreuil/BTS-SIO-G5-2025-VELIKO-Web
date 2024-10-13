@@ -51,7 +51,7 @@ docker-compose up -d
 docker-compose down
 ```
 
-### 4️⃣ **Modification du fichier .env**
+### 4️⃣ **Modification du fichier [.env](#.env)**
 
 Copiez le fichier `.env.example` et renommez-le-en `.env`. Modifiez les variables d'environnement suivant :
 
@@ -136,9 +136,9 @@ symfony server:stop
 
 Dans ce projet, plusieurs technologies ont été utilisées :
 
-- [API](#🌐-API) pour la météo ([OpenWeatherMap](#openweathermap))
-- [API](#openstreetmap) d'[OpenStreetMap](#openstreetmap) pour la géolocalisation et la carte
-- [API](#velib) de Vélib pour les informations sur les stations de vélos
+- [API](#api) pour la météo ([OpenWeatherMap](#openweathermap))
+- API d'[OpenStreetMap](#openstreetmap) pour la géolocalisation et la carte
+- API de Vélib pour les informations sur les stations de vélos
 - [Symfony](#symfony) pour le [back-end](#back-end)
 - [Twig](#twig) pour le [front-end](#front-end)
 - [Bootstrap](#bootstrap) pour le design
@@ -164,61 +164,66 @@ Dans ce projet, plusieurs technologies ont été utilisées :
 ### 📖 **Lexique**
 
 
-#### <a id="migration"></a>🔄 Migration
-**Définition :**
-Une migration est un fichier qui permet de mettre à jour la base de données. Elle permet de créer, modifier ou supprimer des tables.
-
 #### <a id="api"></a>🌐 API
-**Définition :**
+**Définition :**  
 Une API (Interface de Programmation d'Applications) est un ensemble de règles qui permet à des applications différentes de communiquer entre elles. Elle définit comment envoyer des demandes et recevoir des réponses, facilitant ainsi l'échange de données et de services.
 
-#### <a id="symfony"></a>🛠️ Symfony
-**Définition :**
-Symfony est un framework PHP open-source qui permet de développer des applications web.
-
-#### <a id="twig"></a>🌿 Twig
-**Définition :**
-Twig est un moteur de template pour PHP. C'est lui qui donne le visuel pour l'utilisateur.
+#### <a id="back-end"></a>⚙️ Back-end
+**Définition :**  
+Le back-end est la partie invisible de l'application. C'est ce qui permet de faire fonctionner l'application.
 
 #### <a id="bootstrap"></a>🎨 Bootstrap
-**Définition :**
+**Définition :**  
 Bootstrap est une bibliothèque CSS qui permet de styliser les pages web.
 
 #### <a id="docker"></a>🐳 Docker
-**Définition :**
+**Définition :**  
 Docker est une plateforme open-source qui permet de simuler un environnement de développement.
 
-#### <a id="orm-doctrine"></a>🗄️ ORM Doctrine
+#### <a id=".env"></a>🔐 .env
 **Définition :**
-Doctrine est un ORM (Object-Relational Mapping) qui permet de faire le lien entre la base de données et le code PHP.
+Le fichier .env est un fichier de configuration qui contient les variables d'environnement.
 
 #### <a id="mailtrap"></a>📧 Mailtrap
-**Définition :**
+**Définition :**  
 Mailtrap est un outil de test pour les emails. Il permet de vérifier si les emails sont envoyés correctement.
 
-#### <a id="openweathermap"></a>🌦️ OpenWeatherMap
-**Définition :**
-OpenWeatherMap est une API qui permet de récupérer les informations météorologiques.
-
-#### <a id="openstreetmap"></a>🗺️ OpenStreetMap
-**Définition :**
-OpenStreetMap est une API qui permet de récupérer des informations géographiques.
-
-#### <a id="front-end"></a>🖥️ Front-end
-**Définition :**
-Le front-end est la partie visible de l'application. C'est ce que l'utilisateur voit.
-
-#### <a id="back-end"></a>⚙️ Back-end
-**Définition :**
-Le back-end est la partie invisible de l'application. C'est ce qui permet de faire fonctionner l'application.
-
-#### <a id="php"></a>🐘 PHP
-**Définition :**
-PHP est un langage de programmation qui permet de créer des sites web dynamiques.
+#### <a id="migration"></a>🔄 Migration
+**Définition :**  
+Une migration est un fichier qui permet de mettre à jour la base de données. Elle permet de créer, modifier ou supprimer des tables.
 
 #### <a id="mysql"></a>🛢️ MySQL
-**Définition :**
+**Définition :**  
 MySQL est un système de gestion de base de données relationnelles. Une base de données est un ensemble de données organisées.
+
+#### <a id="openstreetmap"></a>🗺️ OpenStreetMap
+**Définition :**  
+OpenStreetMap est une API qui permet de récupérer des informations géographiques.
+
+#### <a id="openweathermap"></a>🌦️ OpenWeatherMap
+**Définition :**  
+OpenWeatherMap est une API qui permet de récupérer les informations météorologiques.
+
+#### <a id="orm-doctrine"></a>🗄️ ORM Doctrine
+**Définition :**  
+Doctrine est un ORM (Object-Relational Mapping) qui permet de faire le lien entre la base de données et le code PHP.
+
+#### <a id="php"></a>🐘 PHP
+**Définition :**  
+PHP est un langage de programmation qui permet de créer des sites web dynamiques.
+
+#### <a id="symfony"></a>🛠️ Symfony
+**Définition :**  
+Symfony est un framework PHP open-source qui permet de développer des applications web.
+
+#### <a id="twig"></a>🌿 Twig
+**Définition :**  
+Twig est un moteur de template pour PHP. C'est lui qui donne le visuel pour l'utilisateur.
+
+#### <a id="front-end"></a>🖥️ Front-end
+**Définition :**  
+Le front-end est la partie visible de l'application. C'est ce que l'utilisateur voit.
+
 
 ---
 
