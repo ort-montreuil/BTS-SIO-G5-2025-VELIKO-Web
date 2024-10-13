@@ -103,11 +103,28 @@ class ParametreController extends AbstractController
                 $password = $form->get('password')->getData();
 
                 if ($passwordHasher->isPasswordValid($user, $password)) {
-                    $entityManager->remove($user);
+                    // Hachage des attributs avant suppression
+                    $hashedNom = hash('sha256', $user->getNom());
+                    $hashedPrenom = hash('sha256', $user->getPrenom());
+                    $hashedDateNaissance = hash('sha256', $user->getDateNaissance()->format('Y-m-d'));
+
+                    $hashedAdresse = substr(hash('sha256', $user->getAdresse()), 0, 45);
+
+                    $hashedVille = $user->getVille();
+                    $hashedCodePostal = $user->getCodePostal();
+
+                    $hashedEmail = hash('sha256', $user->getEmail());
+
+                    $user->setNom($hashedNom);
+                    $user->setPrenom($hashedPrenom);
+                    $user->setAdresse($hashedAdresse);
+                    $user->setCodePostal($hashedCodePostal);
+                    $user->setVille($hashedVille);
+                    $user->setEmail($hashedEmail);
                     $entityManager->flush();
                     $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
 
-                    // Log out the user
+                    // Déconnexion de l'utilisateur
                     $tokenStorage->setToken(null);
                     $session->invalidate();
 
