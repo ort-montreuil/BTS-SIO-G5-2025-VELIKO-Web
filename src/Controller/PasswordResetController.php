@@ -31,7 +31,7 @@ class PasswordResetController extends AbstractController
 
                 // Envoyer l'email
                 $email = (new Email())
-                    ->from($_ENV['MAILER_FROM_ADDRESS'], $_ENV['MAILER_FROM_NAME'])
+                    ->from($_ENV['MAILER_FROM_ADDRESS'])
                     ->to($user->getEmail())
                     ->subject('Réinitialisation du mot de passe')
                     ->html('<p>Pour réinitialiser votre mot de passe, cliquez sur ce lien : <a href="' . $resetUrl . '">Réinitialiser</a></p>');
@@ -57,7 +57,14 @@ class PasswordResetController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $newPassword = $request->request->get('password');
+            $confirmPassword = $request->request->get('confirm_password');
             $oldPassword = $user->getPassword();
+
+            // Vérifier que le nouveau mot de passe et sa confirmation sont identiques
+            if ($newPassword !== $confirmPassword) {
+                $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
+                return $this->render('security/reset_password.html.twig', ['token' => $token]);
+            }
 
             // Vérifier que le nouveau mot de passe est différent de l'ancien
             if (password_verify($newPassword, $oldPassword)) {
@@ -76,12 +83,13 @@ class PasswordResetController extends AbstractController
 
             // Mettre à jour l'utilisateur
             $user->setPassword($hashedPassword);
-            $user->setResetToken(null); // Supprime le token
-            $entityManager->flush(); // Sauvegarde en base de données
+            $user->setResetToken(null);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/reset_password.html.twig', ['token' => $token]);
     }
+
 }
