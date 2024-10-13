@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +44,7 @@ class RegistrationController extends AbstractController
             }
 
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            $user->setLastPasswordChanged(new \DateTime());
+            $user->setLastPasswordChanged(new DateTime());
 
             $entityManager->persist($user);
             $entityManager->flush();

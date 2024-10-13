@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use App\Controller\MesStationsController;
 
 class StationFavorisController extends AbstractController
 {
@@ -22,10 +21,11 @@ class StationFavorisController extends AbstractController
         $this->client = $client;
         $this->entityManager = $entityManager;
     }
+
     #[Route('/station/favoris', name: 'app_station_favoris')]
     public function index(Request $request): Response
     {
-        $response = $this->client->request('GET', $_ENV['API_VELIKO_URL']."/stations");
+        $response = $this->client->request('GET', $_ENV['API_VELIKO_URL'] . "/stations");
         $stations = $response->toArray();
 
         $query = $request->query->get('query', '');
@@ -72,7 +72,7 @@ class StationFavorisController extends AbstractController
         return $this->render('station_favoris/index.html.twig', [
             'controller_name' => 'StationFavorisController',
             'stations' => $stations,
-            'mesStations' =>'MesStationsController',
+            'mesStations' => 'MesStationsController',
         ]);
     }
 }
