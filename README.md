@@ -152,12 +152,14 @@ Dans ce projet, plusieurs technologies ont été utilisées :
 
 ### 🔥 **Fonctionnalités**
 
-- **Inscription et connexion**
-- **Ajout de stations de vélos à vos favoris**
-- **Visualisation des stations de vélos sur une carte**
-- **Informations sur la météo**
-- **Géolocalisation**
-- **Nombre de vélos disponibles à chaque station**
+
+- 🔑 **Inscription et connexion**
+- ⭐ **Ajout de stations de vélos à vos favoris**
+- 🗺️ **Visualisation des stations de vélos sur une carte**
+- 🌦️ **Informations sur la météo**
+- 📍 **Géolocalisation**
+- 🚲 **Nombre de vélos disponibles à chaque station**
+
 
 ---
 
