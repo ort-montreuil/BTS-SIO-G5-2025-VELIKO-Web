@@ -25,7 +25,7 @@ class StationFavorisController extends AbstractController
     #[Route('/station/favoris', name: 'app_station_favoris')]
     public function index(Request $request): Response
     {
-        $response = $this->client->request('GET', 'http://localhost:9042/api/stations');
+        $response = $this->client->request('GET', $_ENV['API_VELIKO_URL']."/stations");
         $stations = $response->toArray();
 
         $query = $request->query->get('query', '');
