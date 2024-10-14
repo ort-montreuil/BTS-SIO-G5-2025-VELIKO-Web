@@ -115,12 +115,11 @@ class ParametreController extends AbstractController
 
                     $hashedEmail = hash('sha256', $user->getEmail());
 
-                    $user->setNom($hashedNom);
-                    $user->setPrenom($hashedPrenom);
-                    $user->setAdresse($hashedAdresse);
-                    $user->setCodePostal($hashedCodePostal);
-                    $user->setVille($hashedVille);
-                    $user->setEmail($hashedEmail);
+                    $user->setNom('anonyme');
+                    $user->setPrenom('anonyme');
+                    $user->setAdresse('anonyme');
+                    $user->setVille('anonyme');
+                    $user->setEmail('anonyme');
                     $entityManager->flush();
                     $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
 
