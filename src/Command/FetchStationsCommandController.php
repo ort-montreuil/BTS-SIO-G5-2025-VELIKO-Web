@@ -27,7 +27,7 @@ class FetchStationsCommandController extends Command
         $client = HttpClient::create();
 
         // Récupération des données depuis l'API
-        $response = $client->request('GET', $_ENV['API_VELIKO_URL'] . "/api/stations");
+        $response = $client->request('GET', $_ENV['API_VELIKO_URL'] . "/stations");
         $data = $response->toArray();
 
         // Affichage des données récupérées (débogage)

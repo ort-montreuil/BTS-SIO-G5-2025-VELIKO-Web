@@ -16,6 +16,13 @@ class StationRepository extends ServiceEntityRepository
         parent::__construct($registry, Station::class);
     }
 
+public function findAllStations(): array
+{
+    return $this->createQueryBuilder('s')
+        ->getQuery()
+        ->getResult();
+}
+
     //    /**
     //     * @return Station[] Returns an array of Station objects
     //     */
