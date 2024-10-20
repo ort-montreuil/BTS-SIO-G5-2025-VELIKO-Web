@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Station;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
+
 
 /**
  * @extends ServiceEntityRepository<Station>
@@ -16,12 +19,6 @@ class StationRepository extends ServiceEntityRepository
         parent::__construct($registry, Station::class);
     }
 
-public function findAllStations(): array
-{
-    return $this->createQueryBuilder('s')
-        ->getQuery()
-        ->getResult();
-}
 
     //    /**
     //     * @return Station[] Returns an array of Station objects

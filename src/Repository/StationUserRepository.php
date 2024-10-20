@@ -15,6 +15,14 @@ class StationUserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, StationUser::class);
     }
+    public function findStationsByUserId(int $userId)
+    {
+        return $this->createQueryBuilder('su')
+            ->andWhere('su.idUser = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return StationUser[] Returns an array of StationUser objects

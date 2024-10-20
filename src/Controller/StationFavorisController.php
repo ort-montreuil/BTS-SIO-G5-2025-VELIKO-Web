@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Station;
+use App\Entity\StationUser;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,37 +39,28 @@ class StationFavorisController extends AbstractController
         if ($request->isMethod('POST')) {
             $selectedStations = $request->request->all('stations');
             if ($selectedStations) {
-                $userEmail = $this->getUser()->getEmail();
-                $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $userEmail]);
+                $userId = $this->getUser()->getId();  // ID de l'utilisateur connecté
 
                 foreach ($selectedStations as $stationId) {
-                    // Validate that the stationId is an integer
+                    // Valider que stationId est bien numérique
                     if (!is_numeric($stationId)) {
                         continue;
                     }
 
-                    // Check if the station already exists in the EntityManager
-                    $existingStation = $this->entityManager->getRepository(Station::class)->find($stationId);
-                    if ($existingStation) {
-                        $stationFavoris = $existingStation;
-                    } else {
-                        $stationFavoris = new Station();
-                        $stationFavoris->setId((int)$stationId); // Ensure the ID is an integer
+                    // Créer une nouvelle entrée dans StationUser
+                    $stationUser = new StationUser();
+                    $stationUser->setIdUser($userId);
+                    $stationUser->setIdStation((int)$stationId);  // Convertir en entier si nécessaire
 
-                    }
-                    $stationFavoris->setEmailuser($user);
-
-                    $this->entityManager->persist($stationFavoris);
-
-                    $this->entityManager->flush();
+                    $this->entityManager->persist($stationUser);
                 }
 
-
+                $this->entityManager->flush();
                 $this->addFlash('success', 'Stations ajoutées avec succès.');
-
                 return $this->redirectToRoute('app_station_favoris');
             }
         }
+
         return $this->render('station_favoris/index.html.twig', [
             'controller_name' => 'StationFavorisController',
             'stations' => $stations,
