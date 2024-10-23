@@ -37,6 +37,18 @@ class StationFavorisController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
+            if ($request->isMethod('POST') && $request->get("idStations"))
+            {
+                /** @var User $user */
+                $user = $this->getUser();
+                $userId = $user->getId();
+                $selectedStationsId = $request->get("idStations");
+                $stationUser = new StationUser();
+                $stationUser->setIdStation($selectedStationsId);
+                $stationUser->setIdUser($userId);
+                $this->entityManager->persist($stationUser);
+                $this->entityManager->flush();
+            }
             $selectedStations = $request->request->all('stations');
             if ($selectedStations) {
                 $userId = $this->getUser()->getId();  // ID de l'utilisateur connecté

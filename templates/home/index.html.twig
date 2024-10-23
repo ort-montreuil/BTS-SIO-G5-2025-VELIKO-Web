@@ -37,15 +37,20 @@
         // parcourir le 2ᵉ fichier json pour récupérer des informations supplémentaires
         {% for st in stations_statuts %}
         {% if st.station_id == station.station_id %}
-        marker.bindPopup('<form action="/favoritestations" method="post">' +
+        marker.bindPopup('<form action="/station/favoris" method="post">' +
             "Nom : {{ station.name }}" +
-            "<input type='hidden' id='nomStations' name='nomStations' value='{{ station.name }}'>" +
             " <br> Nombres vélos total : {{ st.num_bikes_available }}" +
             " <br> Nombre vélos électriques : {{ st.num_bikes_available_types[1].ebike }}" +
             "<br> Nombre de vélos mécaniques : {{ st.num_bikes_available_types[0].mechanical }}" +
+
+            '{% if is_granted("IS_AUTHENTICATED_FULLY") %}' +
             "<input type='hidden' id='idStations' name='idStations' value='{{ station.station_id }}'>" +
             "<br>" +
-            '<button type="submit" id="favori" name="favori">Ajouter au favori</button></form>');
+            '<button type="submit" id="favori" name="favori">Ajouter au favori</button>' +
+            '{% else %}' +
+            '<p>Vous devez être connecté pour ajouter une station en favori.' +
+            '{% endif %}' +
+            '</form>');
         marker.on('mouseover', function (e) {
             this.openPopup();
         });
