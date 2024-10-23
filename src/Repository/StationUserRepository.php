@@ -44,6 +44,15 @@ class StationUserRepository extends ServiceEntityRepository
             ->getResult();
 
     }
+    public function deleteStationByStationId(int $stationId)
+    {
+        return $this->createQueryBuilder('su')
+            ->delete()
+            ->andWhere("su.idStation = :stationId")
+            ->setParameter("stationId", $stationId)
+            ->getQuery()
+            ->execute();
+    }
 //    /**
 //     * @return StationUser[] Returns an array of StationUser objects
 //     */

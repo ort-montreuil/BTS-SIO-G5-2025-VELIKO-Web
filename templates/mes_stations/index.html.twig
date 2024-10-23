@@ -14,7 +14,12 @@
                     {% else %}
                         <ul class="list-group" id="station-list">
                             {% for station in station_names %}
-                                <li class="list-group-item">{{ station }}</li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ station.name }}
+                                    <form method="POST" action="{{ path('app_station_delete', {'id': station.id}) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </li>
                             {% endfor %}
                         </ul>
                     {% endif %}
