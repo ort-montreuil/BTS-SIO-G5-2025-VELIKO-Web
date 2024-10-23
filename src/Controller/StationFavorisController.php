@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Station;
 use App\Entity\StationUser;
 use App\Entity\User;
+use App\Repository\StationUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,17 +38,31 @@ class StationFavorisController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
+            /** @var StationUserRepository $stationUserRepository */
+            $stationUserRepository = $this->entityManager->getRepository(StationUser::class);
+            /** @var User $user */
+            $user = $this->getUser();
+            $userId = $user->getId();
+
             if ($request->isMethod('POST') && $request->get("idStations"))
             {
-                /** @var User $user */
-                $user = $this->getUser();
-                $userId = $user->getId();
-                $selectedStationsId = $request->get("idStations");
-                $stationUser = new StationUser();
-                $stationUser->setIdStation($selectedStationsId);
-                $stationUser->setIdUser($userId);
-                $this->entityManager->persist($stationUser);
-                $this->entityManager->flush();
+                $idStation = 0;
+                for ($i = 0; $i < count($stationUserRepository->findStationsByUserId($userId)); $i++) {
+                    $idStation = $stationUserRepository->findStationsByUserId($userId)[$i]["idStation"];
+                }
+                    if ($request->get("idStations") == $idStation) {
+                        echo "<div class='alert alert-danger'><p>Vous avez déjà ajouté cette station dans vos favoris.</p></div>";
+                    }
+                    else
+                    {
+                        $selectedStationsId = $request->get("idStations");
+                        $stationUser = new StationUser();
+                        $stationUser->setIdStation($selectedStationsId);
+                        $stationUser->setIdUser($userId);
+                        $this->entityManager->persist($stationUser);
+                        $this->entityManager->flush();
+                    }
+
             }
             $selectedStations = $request->request->all('stations');
             if ($selectedStations) {
