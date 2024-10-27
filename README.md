@@ -13,8 +13,8 @@ disponibles à chaque station.
 Avant de commencer, assurez-vous d'avoir installé les outils suivants :
 
 - **Docker**
-- **PHP** (version recommandée : 8.1)
-- **Symfony** (version recommandée : 6.4)
+- **PHP** (version utilisée : 8.1)
+- **Symfony** (version utilisée : 6.4)
 
 
 ### 1️⃣ **Cloner le projet**
@@ -23,7 +23,7 @@ Cloner le projet depuis GitHub :
 git clone git@github.com:ort-montreuil/BTS-SIO-G5-2025-VELIKO-Web.git
 ```
 
-### 2️⃣ **installation des dépendances**
+### 2️⃣ **Installation des dépendances**
 
 Installation des dépendances avec composer (vendor)
 

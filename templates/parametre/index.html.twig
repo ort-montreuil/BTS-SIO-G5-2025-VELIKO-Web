@@ -3,6 +3,38 @@
 {% block title %}Paramètres{% endblock %}
 
 {% block body %}
+    <style>
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .about-block {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f5f5f5; /* Par défaut */
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .about-block {
+                background-color: #2c2c2c;
+                color: #e0e0e0; /* Texte compatible mode sombre */
+            }
+        }
+
+        .about-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .about-header h4 {
+            margin-right: 10px;
+        }
+    </style>
+
     <div class="container">
         <div class="row">
             <div class="col-md-4">
@@ -10,7 +42,7 @@
                 <ul class="list-group" id="parametre-list">
                     {% for parametre in parametres %}
                         <li class="list-group-item">
-                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : (parametre.id == 4 ? 'supprimer-compte' : ''))) }) }}"
+                            <a href="{{ path('app_parametre', { action: parametre.id == 1 ? 'changer-attribut' : (parametre.id == 2 ? 'changer-mot-de-passe' : (parametre.id == 3 ? 'deconnexion' : (parametre.id == 4 ? 'supprimer-compte' : (parametre.id == 5 ? 'a-propos')))) }) }}"
                                style="text-decoration: none; color: inherit;">
                                 {{ parametre.name }}
                             </a>
@@ -46,6 +78,61 @@
                     <p>Voulez-vous vraiment vous déconnecter ?</p>
                     <div id="form-container">
                         <a href="{{ path('app_logout') }}" class="btn btn-danger mt-3">Déconnexion</a>
+                    </div>
+                {% elseif action == 'a-propos' %}
+                    <br>
+                    <h3>À propos</h3>
+                    <div class="about-grid">
+                        <div class="about-block">
+                            <div class="about-header">
+                                <h4>Qui sommes-nous ?</h4>
+                                <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                                <lord-icon
+                                        src="https://cdn.lordicon.com/znhrmptg.json"
+                                        trigger="loop"
+                                        stroke="bold"
+                                        state="loop-cycle"
+                                        colors="primary:#66ee78,secondary:#000000"
+                                        style="width:75px;height:75px">
+                                </lord-icon>
+                            </div>
+                            <p>Engagés pour la mobilité durable et la protection de l’environnement, nous avons créé
+                                <strong>Veliko</strong> pour faciliter l'accès aux vélos partagés Vélib' en Île-de-France.</p>
+                        </div>
+                        <div class="about-block">
+                            <div class="about-header">
+                                <h4>Stations disponibles</h4>
+                                <img src="{{ asset('images/bicycle-station.png') }}" alt="Logo Station" width="100" height="100">
+                            </div>
+                            <p>Nombre total de stations disponibles : 1497</p>
+                            <p>Nombre total de vélos  : </p>
+                            <p>Nombre total de vélos électriques : </p>
+                            <p>Nombre total de vélos classiques : </p>
+                        </div>
+                        <div class="about-block">
+                            <div class="about-header">
+                            <h4>Veliko c'est quoi ?</h4>
+                            <img src="{{ asset('images/map.png') }}" alt="Logo Map" width="100" height="100">
+                            </div>
+                            <p><strong>Veliko</strong> est une plateforme interactive qui présente toutes les stations Vélib' de la
+                                région Île-de-France sur une carte dynamique. Vous pouvez visualiser en
+                                temps réel le nombre de vélos disponibles dans chaque station, qu'ils soient classiques
+                                ou électriques. Veliko permet également de créer une liste de stations favorites.</p>
+                        </div>
+                        <div class="about-block">
+                            <div class="about-header">
+                                <h4>Pourquoi utiliser Veliko ?</h4>
+                                <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+                                <dotlottie-player src="https://lottie.host/5a8f28a7-0870-4013-8c8f-babcfbdc6e3b/pdyYs8q6zj.json" background="transparent" speed="1" style="width: 75px; height: 75px;" loop autoplay></dotlottie-player>
+                            </div>
+                            <p><strong>Veliko</strong> n'est pas seulement un service de vélos partagés, c'est une solution complète pour une mobilité durable et accessible en Île-de-France. Voici quelques raisons de choisir Veliko :</p>
+                            <ul>
+                                <li><strong>Accessibilité :</strong> Trouvez facilement une station près de chez vous grâce à notre carte interactive.</li>
+                                <li><strong>Durabilité :</strong> Contribuez à la réduction de l'empreinte carbone en optant pour le vélo plutôt que la voiture.</li>
+                            </ul>
+                        </div>
+
                     </div>
 
                 {% else %}
