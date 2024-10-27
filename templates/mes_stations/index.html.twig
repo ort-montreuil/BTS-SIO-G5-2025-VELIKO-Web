@@ -3,6 +3,45 @@
 {% block title %}Mes Station Favoris{% endblock %}
 
 {% block body %}
+    <style>
+        /* Style de base du bouton */
+        .trash-button {
+            background-color: red;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Style de l'icône de poubelle */
+        .icon-trash {
+            width: 24px;
+            height: 24px;
+            fill: white; /* Icône blanche pour contraster avec le fond rouge */
+            transition: transform 0.3s ease;
+        }
+
+        /* Couvercle de la poubelle */
+        .trash-lid {
+            transform-origin: top center; /* Définit le point de rotation du couvercle */
+            transition: transform 0.3s ease;
+        }
+
+        /* Animation d'ouverture du couvercle au survol */
+        .trash-button:hover .trash-lid {
+            transform: rotate(-25deg); /* Ouvre le couvercle légèrement */
+        }
+
+        /* Couleur plus foncée au survol */
+        .trash-button:hover {
+            background-color: darkred;
+        }
+
+    </style>
     <div class="example-wrapper">
         <h1 class="text-center">Mes Stations Favoris</h1>
         <div class="container">
@@ -17,12 +56,22 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     {{ station.name }}
                                     <form method="POST" action="{{ path('app_station_delete', {'id': station.id}) }}">
-                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                        <button type="submit" class="trash-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" class="icon-trash">
+                                                <!-- Couvercle de la poubelle -->
+                                                <path class="trash-lid" d="M3 2.5h10v1H3v-1z"/>
+                                                <!-- Corps de la poubelle -->
+                                                <path d="M4 4h8v10H4V4z"/>
+                                                <!-- Poignées de la poubelle -->
+                                                <path d="M5 5v7h1V5H5zm5 0v7h1V5h-1z"/>
+                                            </svg>
+                                        </button>
                                     </form>
                                 </li>
                             {% endfor %}
                         </ul>
                     {% endif %}
+                    <br>
                     <button class="btn btn-outline-warning" onclick="window.location.href='{{ path('app_station_favoris') }}';">Retourner aux stations favoris</button>
                 </div>
             </div>
