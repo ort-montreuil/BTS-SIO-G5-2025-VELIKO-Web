@@ -43,9 +43,15 @@
         }
 
         @keyframes dot-flashing {
-            0% { opacity: 0.1; }
-            50% { opacity: 1; }
-            100% { opacity: 0.1; }
+            0% {
+                opacity: 0.1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.1;
+            }
         }
     </style>
 {% endblock %}
@@ -70,7 +76,7 @@
 
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script>
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.href = "{{ path('app_home') }}";
         }, 1000);
     </script>

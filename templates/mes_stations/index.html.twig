@@ -4,7 +4,7 @@
 
 {% block body %}
     <style>
-        /* Style de base du bouton */
+
         .trash-button {
             background-color: red;
             border: none;
@@ -17,26 +17,22 @@
             transition: background-color 0.3s ease;
         }
 
-        /* Style de l'icône de poubelle */
         .icon-trash {
             width: 24px;
             height: 24px;
-            fill: white; /* Icône blanche pour contraster avec le fond rouge */
+            fill: white;
             transition: transform 0.3s ease;
         }
 
-        /* Couvercle de la poubelle */
         .trash-lid {
-            transform-origin: top center; /* Définit le point de rotation du couvercle */
+            transform-origin: top center;
             transition: transform 0.3s ease;
         }
 
-        /* Animation d'ouverture du couvercle au survol */
         .trash-button:hover .trash-lid {
-            transform: rotate(-25deg); /* Ouvre le couvercle légèrement */
+            transform: rotate(-25deg);
         }
 
-        /* Couleur plus foncée au survol */
         .trash-button:hover {
             background-color: darkred;
         }
