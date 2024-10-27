@@ -9,9 +9,22 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_redirect_to_loading')]
+    public function redirectToLoading(): Response
+    {
+        return $this->redirectToRoute('app_loading');
+    }
+
+    #[Route('/loading', name: 'app_loading')]
+    public function loading(): Response
+    {
+        return $this->render('home/loading.html.twig');
+    }
+
+    #[Route('/home', name: 'app_home')]
     public function execute(Request $request): Response
     {
+        // Configuration des requêtes cURL pour récupérer les données
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => $_ENV["API_VELIKO_URL"] . "/stations",
@@ -22,15 +35,13 @@ class HomeController extends AbstractController
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_POSTFIELDS => "",
             CURLOPT_SSL_VERIFYPEER => false
-            //Nous récupérons les données du fichier json
         ]);
-        $stations_informations = curl_exec($curl); //elles sont donc stockées dans stations_informations
+        $stations_informations = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
 
-        $stations_informations = json_decode($stations_informations, true); //nous décodons les données afin qu'elles soient accessibles
+        $stations_informations = json_decode($stations_informations, true);
 
-        //Le même processsus pour le fichier json suivant
         $curl2 = curl_init();
         curl_setopt_array($curl2, [
             CURLOPT_URL => $_ENV["API_VELIKO_URL"] . "/stations/status",
@@ -47,7 +58,6 @@ class HomeController extends AbstractController
         curl_close($curl2);
 
         $stations_statuts = json_decode($stations_statuts, true);
-
 
         return $this->render('home/index.html.twig', [
             'titre' => 'Carte OpenStreetMap',
