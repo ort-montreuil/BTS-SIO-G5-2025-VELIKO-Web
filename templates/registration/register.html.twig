@@ -33,6 +33,10 @@
         }
     }) }}
     {{ form_row(registrationForm.agreeTerms) }}
+    <p>
+        En vous inscrivant, vous acceptez nos
+        <a href="{{ path('app_rgpd') }}">conditions d'utilisation</a>
+    </p>
 
     <button type="submit" id="submit" class="btn btn-lg btn-primary">S'inscrire</button>
     {{ form_end(registrationForm) }}
