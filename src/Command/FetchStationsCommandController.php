@@ -2,16 +2,17 @@
 
 namespace App\Command;
 
+use Amp\Http\Client\HttpClient;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpClient\HttpClient;
 
 class FetchStationsCommandController extends Command
 {
     protected static $defaultName = 'app:fetch-stations';
+
 
     private $entityManager;
 

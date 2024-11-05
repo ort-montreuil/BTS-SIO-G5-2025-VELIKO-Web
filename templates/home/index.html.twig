@@ -28,23 +28,19 @@
         var markers = L.markerClusterGroup();
 
         // parcourir le 1er fichier json pour afficher les marqueurs
-        {% for station in stations_informations %}
+        {% for station in stations %}
         var latitude = '{{ station.lat }}';
         var longitude = '{{ station.lon }}';
         var marker = L.marker([latitude, longitude]);
 
-
-        // parcourir le 2ᵉ fichier json pour récupérer des informations supplémentaires
-        {% for st in stations_statuts %}
-        {% if st.station_id == station.station_id %}
         marker.bindPopup('<form action="/station/favoris" method="post">' +
-            "Nom : {{ station.name }}" +
-            " <br> Nombres vélos total : {{ st.num_bikes_available }}" +
-            " <br> Nombre vélos électriques : {{ st.num_bikes_available_types[1].ebike }}" +
-            "<br> Nombre de vélos mécaniques : {{ st.num_bikes_available_types[0].mechanical }}" +
+            "Nom : {{ station.nom }}" +
+            " <br> Nombres vélos total : {{ station.velodispo }}" +
+            " <br> Nombre vélos électriques : {{ station.veloelec }}" +
+            "<br> Nombre de vélos mécaniques : {{ station.velomecha }}" +
 
             '{% if is_granted("IS_AUTHENTICATED_FULLY") %}' +
-            "<input type='hidden' id='idStations' name='idStations' value='{{ station.station_id }}'>" +
+            "<input type='hidden' id='idStations' name='idStations' value='{{ station.id }}'>" +
             "<br>" +
             '<button type="submit" id="favori" name="favori">Ajouter au favori</button>' +
             '{% else %}' +
@@ -58,11 +54,18 @@
             this.openPopup();
         });
 
+        markers.addLayer(marker);
+        {% endfor %}
+
+        marker.on('mouseover', function (e) {
+            this.openPopup();
+        });
+        marker.on('click', function (e) {
+            this.openPopup();
+        });
+
 
         markers.addLayer(marker);
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
 
         mymap.addLayer(markers);
 

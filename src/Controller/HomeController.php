@@ -57,12 +57,35 @@ class HomeController extends AbstractController
         $err2 = curl_error($curl2);
         curl_close($curl2);
 
+
+        $stations = [];
+
         $stations_statuts = json_decode($stations_statuts, true);
+
+        foreach ($stations_informations as $infostat) {
+            foreach ($stations_statuts as $infovelo) {
+                if ($infostat['station_id'] == $infovelo['station_id']) {
+                    $stations_data = [
+                        'nom' => $infostat['name'],
+                        'lat' => $infostat['lat'],
+                        'lon' => $infostat['lon'],
+                        'velodispo' => $infovelo['num_bikes_available'],
+                        'velomecha' => $infovelo['num_bikes_available_types'][0]['mechanical'],
+                        'veloelec' => $infovelo['num_bikes_available_types'][1]['ebike'],
+                        "id" => $infostat["station_id"]
+                    ];
+                    $stations[] = $stations_data; // opérateur d'assignation corrigé pour ajouter au tableau
+                    // var_dump($stations);
+                    break;
+
+                }
+            }
+        }
+
 
         return $this->render('home/index.html.twig', [
             'titre' => 'Carte OpenStreetMap',
-            'stations_informations' => $stations_informations,
-            'stations_statuts' => $stations_statuts
+            'stations' => $stations
         ]);
     }
 }
