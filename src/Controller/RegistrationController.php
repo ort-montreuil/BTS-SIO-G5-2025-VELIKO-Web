@@ -14,13 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier)
+    private EmailVerifier $emailVerifier;
+
+    public function __construct(EmailVerifier $emailVerifier)
     {
+        $this->emailVerifier = $emailVerifier;
     }
 
     #[Route('/register', name: 'app_register')]
@@ -38,7 +41,6 @@ class RegistrationController extends AbstractController
                 !preg_match('/[A-Z]/', $plainPassword) ||
                 !preg_match('/[0-9]/', $plainPassword) ||
                 !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $plainPassword)) {
-                // Ajouter un message flash d'erreur et rediriger vers le formulaire d'inscription
                 $this->addFlash('error', 'Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.');
                 return $this->redirectToRoute('app_register');
             }
@@ -46,21 +48,25 @@ class RegistrationController extends AbstractController
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setLastPasswordChanged(new DateTime());
 
+            // Générer un token et l'enregistrer
+            $token = bin2hex(random_bytes(16));
+            $user->setToken($token);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Envoyer un e-mail de vérification
+            // Envoyer un e-mail de vérification avec le token encodé
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address($_ENV["MAILER_FROM_ADDRESS"], $_ENV["MAILER_FROM_NAME"]))
                     ->to($user->getEmail())
                     ->subject('Veuillez confirmer votre adresse e-mail')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->context(['token' => urlencode($token)]) // Encodage du token
             );
 
             $this->addFlash('success', 'Un e-mail de confirmation a été envoyé. Veuillez vérifier votre boîte de réception.');
 
-            // Redirection vers la page de confirmation
             return $this->redirectToRoute('app_check_email');
         }
 
@@ -69,7 +75,6 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
@@ -77,29 +82,28 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $userId = $request->query->get('id');
+        $user = $entityManager->getRepository(User::class)->find($userId);
 
-        try {
-            /** @var User $user */
-            $user = $this->getUser();
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
-
+        if (!$user) {
+            $this->addFlash('verify_email_error', 'Utilisateur non trouvé ou token invalide.');
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
+        try {
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $user->setToken(null);
+            $user->setVerified(true);
+            $entityManager->flush();
 
-        // Redirection vers la page de connexion avec un paramètre de requête
-        return $this->redirectToRoute('app_check_email', ['verified' => 'true']);
+            $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
+        } catch (VerifyEmailExceptionInterface $exception) {
+            $this->addFlash('verify_email_error', $exception->getReason());
+            return $this->redirectToRoute('app_register');
+        }
 
-
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
-
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }
