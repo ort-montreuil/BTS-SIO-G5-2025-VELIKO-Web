@@ -50,11 +50,10 @@ class StationFavorisController extends AbstractController
                 for ($i = 0; $i < count($stationUserRepository->findStationsByUserId($userId)); $i++) {
                     $idStation = $stationUserRepository->findStationsByUserId($userId)[$i]["idStation"];
                 }
-                    if ($request->get("idStations") == $idStation) {
-                        echo "<div class='alert alert-danger'><p>Vous avez déjà ajouté cette station dans vos favoris.</p></div>";
-                    }
-                    else
-                    {
+                if ($request->get("idStations") == $idStation) {
+                    return $this->redirectToRoute('app_station_favoris');
+                }
+                else {
                         $selectedStationsId = $request->get("idStations");
                         $stationUser = new StationUser();
                         $stationUser->setIdStation($selectedStationsId);
