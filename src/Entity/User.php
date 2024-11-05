@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $verified = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $token = null;
+
 
     public function getId(): ?int
     {
@@ -243,6 +246,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $verified): static
     {
         $this->verified = $verified;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): static
+    {
+        $this->token = $token;
 
         return $this;
     }
