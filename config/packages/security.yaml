@@ -28,6 +28,8 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+            pattern: ^/
+            user_checker: App\Security\UserChecker
 
     access_control:
     # Ajoutez vos règles ici
