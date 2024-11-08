@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Station;
 use App\Entity\StationUser;
 use App\Entity\User;
 use App\Repository\StationUserRepository;
@@ -10,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class StationFavorisController extends AbstractController
@@ -30,6 +29,7 @@ class StationFavorisController extends AbstractController
         $response = $this->client->request('GET', $_ENV['API_VELIKO_URL'] . "/stations");
         $stations = $response->toArray();
 
+        // Filtrer les stations selon la requête
         $query = $request->query->get('query', '');
         if ($query) {
             $stations = array_filter($stations, function ($station) use ($query) {
@@ -44,47 +44,29 @@ class StationFavorisController extends AbstractController
             $user = $this->getUser();
             $userId = $user->getId();
 
-            if ($request->isMethod('POST') && $request->get("idStations"))
-            {
-                $idStation = 0;
-                for ($i = 0; $i < count($stationUserRepository->findStationsByUserId($userId)); $i++) {
-                    $idStation = $stationUserRepository->findStationsByUserId($userId)[$i]["idStation"];
-                }
-                if ($request->get("idStations") == $idStation) {
-                    return $this->redirectToRoute('app_station_favoris');
-                }
-                else {
-                        $selectedStationsId = $request->get("idStations");
-                        $stationUser = new StationUser();
-                        $stationUser->setIdStation($selectedStationsId);
-                        $stationUser->setIdUser($userId);
-                        $this->entityManager->persist($stationUser);
-                        $this->entityManager->flush();
-                    }
+            // Vérifier si une station doit être ajoutée ou retirée
+            $stationId = $request->get("idStations");
+            $favoriAction = $request->get("favori"); // "add" ou "remove"
 
-            }
-            $selectedStations = $request->request->all('stations');
-            if ($selectedStations) {
-                $userId = $this->getUser()->getId();  // ID de l'utilisateur connecté
-
-                foreach ($selectedStations as $stationId) {
-                    // Valider que stationId est bien numérique
-                    if (!is_numeric($stationId)) {
-                        continue;
-                    }
-
-                    // Créer une nouvelle entrée dans StationUser
-                    $stationUser = new StationUser();
-                    $stationUser->setIdUser($userId);
-                    $stationUser->setIdStation((int)$stationId);  // Convertir en entier si nécessaire
-
-                    $this->entityManager->persist($stationUser);
-                }
-
+            if ($favoriAction === 'add') {
+                // Ajouter une station aux favoris
+                $stationUser = new StationUser();
+                $stationUser->setIdStation($stationId);
+                $stationUser->setIdUser($userId);
+                $this->entityManager->persist($stationUser);
                 $this->entityManager->flush();
-                $this->addFlash('success', 'Stations ajoutées avec succès.');
-                return $this->redirectToRoute('app_station_favoris');
+                $this->addFlash('success', 'Station ajoutée aux favoris.');
+            } elseif ($favoriAction === 'remove') {
+                // Retirer une station des favoris
+                $stationUser = $stationUserRepository->findOneBy(['idStation' => $stationId, 'idUser' => $userId]);
+                if ($stationUser) {
+                    $this->entityManager->remove($stationUser);
+                    $this->entityManager->flush();
+                    $this->addFlash('success', 'Station retirée des favoris.');
+                }
             }
+
+            return $this->redirectToRoute('app_station_favoris');
         }
 
         return $this->render('station_favoris/index.html.twig', [
