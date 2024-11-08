@@ -18,7 +18,7 @@ class UserChecker implements UserCheckerInterface
 
         if (!$user->isVerified()) {
             // the message passed to this exception is meant to be displayed to the user
-            throw new CustomUserMessageAccountStatusException('Your user account is not verified.');
+            throw new CustomUserMessageAccountStatusException('Votre compte doit être verifier.Regardez vos mails');
         }
     }
 
