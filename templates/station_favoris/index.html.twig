@@ -6,56 +6,31 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg" id="navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"></a>
                 <form class="d-flex" method="GET" action="{{ path('app_station_favoris') }}">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une station"
-                           aria-label="Rechercher">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une station" aria-label="Rechercher">
                     <button class="btn btn-outline-success" type="submit">Rechercher</button>
                     <button class="btn btn-outline-danger ms-2" type="reset"
                             onclick="window.location.href='{{ path('app_station_favoris') }}';">Réinitialiser
                     </button>
-                    <button class="btn btn-outline-warning" type="button" style="width: 400px; margin-left: 10px" onclick="window.location.href='{{ path('app_mes_stations') }}';" >Voir stations favoris</button>
-                    <button form="form_stations" class="btn btn-outline-primary" type="submit" style="width: 400px; margin-left: 10px">Ajouter les stations sélectionnées</button>
+                    <button class="btn btn-outline-warning" type="button" onclick="window.location.href='{{ path('app_mes_stations') }}';" >Voir stations favoris</button>
                 </form>
             </div>
         </nav>
 
         <h1>Liste des stations de vélos</h1>
-        <form method="POST" action="{{ path('app_station_favoris') }}" name="form_stations" id="form_stations">
-            <ul>
-                {% for station in stations %}
-                    <li>
-                        <input type="checkbox" name="stations[]" value="{{ station.station_id }}" id="station_{{ station.station_id }}">
-                        <label for="station_{{ station.station_id }}">{{ station.name }}</label>
-                    </li>
-                {% endfor %}
-            </ul>
 
-        </form>
+        <ul>
+            {% for station in stations %}
+                <li>
+                    <span>{{ station.name }}</span>
+                    <!-- Formulaire d'ajout pour chaque station -->
+                    <form method="POST" action="{{ path('app_station_favoris') }}">
+                        <input type="hidden" name="idStations" value="{{ station.station_id }}">
+                        <input type="hidden" name="favori" value="add">
+                        <button type="submit" class="btn btn-outline-primary">Ajouter aux favoris</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const navbar = document.getElementById('navbar');
-
-            // Assurez-vous que le thème actuel est appliqué à la navbar
-            const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
-            if (currentTheme === 'dark') {
-                navbar.classList.add('navbar-dark', 'bg-dark');
-            } else {
-                navbar.classList.add('navbar-light', 'bg-light');
-            }
-
-            themeToggleBtn.addEventListener('click', () => {
-                if (navbar.classList.contains('navbar-light')) {
-                    navbar.classList.remove('navbar-light', 'bg-light');
-                    navbar.classList.add('navbar-dark', 'bg-dark');
-                } else {
-                    navbar.classList.remove('navbar-dark', 'bg-dark');
-                    navbar.classList.add('navbar-light', 'bg-light');
-                }
-            });
-        });
-    </script>
 {% endblock %}
