@@ -2,13 +2,21 @@
 
 namespace App\Controller;
 
+use App\Repository\StationUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    private StationUserRepository $stationUserRepository;
+
+    public function __construct(StationUserRepository $stationUserRepository)
+    {
+        $this->stationUserRepository = $stationUserRepository;
+    }
+
     #[Route('/', name: 'app_redirect_to_loading')]
     public function redirectToLoading(): Response
     {
@@ -57,9 +65,7 @@ class HomeController extends AbstractController
         $err2 = curl_error($curl2);
         curl_close($curl2);
 
-
         $stations = [];
-
         $stations_statuts = json_decode($stations_statuts, true);
 
         foreach ($stations_informations as $infostat) {
@@ -72,20 +78,25 @@ class HomeController extends AbstractController
                         'velodispo' => $infovelo['num_bikes_available'],
                         'velomecha' => $infovelo['num_bikes_available_types'][0]['mechanical'],
                         'veloelec' => $infovelo['num_bikes_available_types'][1]['ebike'],
-                        "id" => $infostat["station_id"]
+                        'id' => $infostat['station_id']
                     ];
-                    $stations[] = $stations_data; // opérateur d'assignation corrigé pour ajouter au tableau
-                    // var_dump($stations);
+                    $stations[] = $stations_data;
                     break;
-
                 }
             }
         }
 
+        $favoriteStationIds = [];
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $userId = $this->getUser()->getId();
+            $favoriteStations = $this->stationUserRepository->findStationsByUserId($userId);
+            $favoriteStationIds = array_column($favoriteStations, 'idStation');
+        }
 
         return $this->render('home/index.html.twig', [
             'titre' => 'Carte OpenStreetMap',
-            'stations' => $stations
+            'stations' => $stations,
+            'favoriteStationIds' => $favoriteStationIds
         ]);
     }
 }

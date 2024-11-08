@@ -33,7 +33,7 @@
         var longitude = '{{ station.lon }}';
         var marker = L.marker([latitude, longitude]);
 
-        marker.bindPopup('<form action="/station/favoris" method="post">' +
+        marker.bindPopup('<form action="{{ path('app_station_favoris') }}" method="post">' +
             "Nom : {{ station.nom }}" +
             " <br> Nombres vélos total : {{ station.velodispo }}" +
             " <br> Nombre vélos électriques : {{ station.veloelec }}" +
@@ -42,7 +42,11 @@
             '{% if is_granted("IS_AUTHENTICATED_FULLY") %}' +
             "<input type='hidden' id='idStations' name='idStations' value='{{ station.id }}'>" +
             "<br>" +
-            '<button type="submit" id="favori" name="favori">Ajouter au favori</button>' +
+            '{% if station.id in favoriteStationIds %}' +
+            '<button type="submit" id="favori" name="favori" value="remove">Retirer des favoris</button>' +
+            '{% else %}' +
+            '<button type="submit" id="favori" name="favori" value="add">Ajouter au favori</button>' +
+            '{% endif %}' +
             '{% else %}' +
             '<p>Vous devez être connecté pour ajouter une station en favori.' +
             '{% endif %}' +
@@ -56,6 +60,7 @@
 
         markers.addLayer(marker);
         {% endfor %}
+
 
         marker.on('mouseover', function (e) {
             this.openPopup();
