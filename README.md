@@ -56,10 +56,10 @@ docker-compose down
 Copiez le fichier `.env.example` et renommez-le-en `.env`. Modifiez les variables d'environnement suivant :
 
 ```
-DATABASE_URL="mysql://root:root@127.0.0.1:3306/app_db?serverVersion=11.5.2-MariaDB&charset=utf8mb4"
+DATABASE_URL="mysql://id:mdp@127.0.0.1:3306/app_db?serverVersion=11.5.2-MariaDB&charset=utf8mb4"
 ```
 
-root est le nom d'utilisateur et le mot de passe de la base de données
+Id est le nom d'utilisateur et mdp le mot de passe de la base de données
 
 127.0.0.1:3306 est l'adresse IP et le port de la base de données
 
