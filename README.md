@@ -19,7 +19,7 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants :
 
 ### 1️⃣ **Cloner le projet**
 Cloner le projet depuis GitHub :
-```bash
+```
 git clone git@github.com:ort-montreuil/BTS-SIO-G5-2025-VELIKO-Web.git
 ```
 

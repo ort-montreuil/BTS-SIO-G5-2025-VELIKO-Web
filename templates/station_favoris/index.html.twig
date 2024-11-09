@@ -2,35 +2,50 @@
 
 {% block title %}Station Favoris{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <nav class="navbar navbar-expand-lg" id="navbar">
             <div class="container-fluid">
-                <form class="d-flex" method="GET" action="{{ path('app_station_favoris') }}">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une station" aria-label="Rechercher">
-                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    <button class="btn btn-outline-danger ms-2" type="reset"
-                            onclick="window.location.href='{{ path('app_station_favoris') }}';">Réinitialiser
-                    </button>
-                    <button class="btn btn-outline-warning" type="button" onclick="window.location.href='{{ path('app_mes_stations') }}';" >Voir stations favoris</button>
+                <form class="d-flex w-100" method="GET" action="{{ path('app_station_favoris') }}">
+                    <!-- Barre de recherche légèrement élargie -->
+                    <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une station" aria-label="Rechercher" style="width: 30%;">
+
+                    <!-- Bouton Rechercher -->
+                    <button class="btn btn-outline-success me-2" type="submit" style="width: 15%;">Rechercher</button>
+
+                    <!-- Bouton Réinitialiser -->
+                    <button class="btn btn-outline-danger me-2" type="reset" onclick="window.location.href='{{ path('app_station_favoris') }}';" style="width: 15%;">Réinitialiser</button>
+
+
+                    <button class="btn btn-outline-warning" type="button" onclick="window.location.href='{{ path('app_mes_stations') }}';" style="width: 20%;">Voir stations favoris</button>
                 </form>
             </div>
         </nav>
 
+
         <h1>Liste des stations de vélos</h1>
 
-        <ul>
-            {% for station in stations %}
-                <li>
-                    <span>{{ station.name }}</span>
-                    <!-- Formulaire d'ajout pour chaque station -->
-                    <form method="POST" action="{{ path('app_station_favoris') }}">
-                        <input type="hidden" name="idStations" value="{{ station.station_id }}">
-                        <input type="hidden" name="favori" value="add">
-                        <button type="submit" class="btn btn-outline-primary">Ajouter aux favoris</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+        {% if stations is not empty %}
+            <ul>
+                {% for station in stations %}
+                    <li>
+                        <span>{{ station.name }}</span>
+                        <form method="POST" action="{{ path('app_station_favoris') }}" style="display: inline;">
+                            <input type="hidden" name="idStations" value="{{ station.station_id }}">
+                            <input type="hidden" name="favori" value="add">
+                            <button type="submit" class="btn btn-outline-primary" style="border: none; background: none; padding: 5px;">
+                                <span style="font-size: 24px; color: gold;">&#9733;</span> <!-- Icône étoile Unicode -->
+                            </button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune station disponible.</p>
+        {% endif %}
     </div>
 {% endblock %}
