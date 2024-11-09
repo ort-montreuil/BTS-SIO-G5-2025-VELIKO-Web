@@ -68,7 +68,7 @@ app_db est le nom de la base de données
 serverVersion=11.5.2 est la version de la base de données : (assurez de mettre la bonne version)
 
 ```
-MAILER_DSN="smtp://ecb93dd9b58334:c14f78b9d5ff18@sandbox.smtp.mailtrap.io:2525"
+MAILER_DSN="smtp://**********:********@sandbox.smtp.mailtrap.io:2525"  
 ```
 
 Afin de recevoir les mails, vous devez créer un compte sur [Mailtrap](https://mailtrap.io/), puis allez sur "my inbox" 
@@ -85,6 +85,9 @@ Exécutez-les [migrations](#migration) pour préparer la base de données :
 php bin/console doctrine:migrations:migrate
 ```
 
+```bash
+php bin/console app:fetch-stations
+```
 ### 4️⃣ **Démarrage du serveur**
 
 Lancer le serveur symfony
