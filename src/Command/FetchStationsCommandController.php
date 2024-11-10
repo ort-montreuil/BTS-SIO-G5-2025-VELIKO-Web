@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Amp\Http\Client\HttpClient;
+use Symfony\Component\HttpClient\HttpClient;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;

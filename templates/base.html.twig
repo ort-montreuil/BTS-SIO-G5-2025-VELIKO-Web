@@ -168,7 +168,7 @@
 <!-- Script pour la météo de Paris -->
 <script>
     async function fetchWeather() {
-        const apiKey = 'f3ac20a9bee6206db04871f2b9e4eb42';
+        const apiKey = "{{ api_meteo }}";
         const url = `https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=${apiKey}&units=metric&lang=fr`;
 
         try {

@@ -23,6 +23,8 @@ Cloner le projet depuis GitHub :
 git clone git@github.com:ort-montreuil/BTS-SIO-G5-2025-VELIKO-Web.git
 ```
 
+> ⚠️ **Important :** : Créez un fichier `.env` à la racine du projet et copiez-collez le contenu du fichier `.env.example` dans le fichier `.env`
+
 ### 2️⃣ **Installation des dépendances**
 
 Installation des dépendances avec composer (vendor)
@@ -45,7 +47,7 @@ Installation des images Docker
 ```bash
 docker-compose up -d
 ```
-> ⚠️ **Important:** : Si vous voulez enlever les images Docker proprement, utilisez la commande :
+> ⚠️ **Important :** : Si vous voulez enlever les images Docker proprement, utilisez la commande :
 
 ```bash
 docker-compose down
@@ -76,19 +78,28 @@ descendez jusqu'à "Code Samples" ensuite dans la section Symfony, choisissez "s
 Ensuite, copiez le code et collez-le dans le fichier .env dans la variable MAILER_DSN. 
 (cliquez bien sur "copy" et non faire un copier-coller)
 
+---
 
-### 4️⃣ **Migration de la base de donnée**
+Pour remplir la variable API_METEO dans le fichier .env, vous devez créer un compte sur [OpenWeatherMap](https://home.openweathermap.org/users/sign_up) et récupérer votre clé API dans l'onglet "API keys".
 
-Exécutez-les [migrations](#migration) pour préparer la base de données :
+### 5️⃣ **Migration de la base de donnée**
+
+Créez une migration pour la base de données :
 
 ```bash
-php bin/console doctrine:migrations:migrate
+php bin/console make:migration
+```
+
+Exécutez-la [migrations](#migration) que vous venez de créer pour préparer la base de données et changez "le_nom_de_la_migration" par le nom de la migration (sans mettre le .php) que vous avez créé :
+
+```bash
+php bin/console doctrine:migrations:execute DoctrineMigrations\le_nom_de_la_migration
 ```
 
 ```bash
 php bin/console app:fetch-stations
 ```
-### 4️⃣ **Démarrage du serveur**
+### 6️⃣ **Démarrage du serveur**
 
 Lancer le serveur symfony
 
