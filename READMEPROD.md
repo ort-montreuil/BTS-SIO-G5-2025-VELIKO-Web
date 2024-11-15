@@ -8,7 +8,6 @@ APP_DEBUG=0
 Installation des dépendances avec composer (vendor)
 
 ```bash
-composer install
 composer install --no-dev --optimize-autoloader
 
 ```
