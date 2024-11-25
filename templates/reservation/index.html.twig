@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation{% endblock %}
+
+{% block body %}
+    <h1> Réservation</h1>
+    <p>Veuillez saisir les informations pour pouvoir faire une réservation</p>
+    <br>
+    <form action="{{ path('app_reservation') }}" method="post">
+        <div>
+            <label for="date">Date : </label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <br>
+        <div>
+            <label for="time">Heure du debut : </label>
+            <input type="time" id="time" name="time" required>
+        </div>
+        <br>
+        <div>
+            <label for="time">Heure de fin : </label>
+            <input type="time" id="timeEnd" name="timeEnd" required>
+        </div>
+        <br>
+        <div>
+            <label for="station">Station de départ : </label>
+            <select id="station" name="station" required>
+                {% for station in stations %}
+                    <option value="{{ station.station_id }}">{{ station.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div>
+            <label for="station">Station d'arrivée :</label>
+            <select id="stationEnd" name="stationEnd" required>
+                {% for station in stations %}
+                    <option value="{{ station.station_id }}">{{ station.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <button type="submit" id="submit" class="btn btn-lg btn-primary">Réserver</button>
+    </form>
+{% endblock %}
