@@ -37,7 +37,7 @@ class ReservationController extends AbstractController
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_reservation_success');
+            return $this->redirectToRoute('app_home');
         }
 
         $response = $this->client->request('GET', $_ENV['API_VELIKO_URL'] . "/stations");
@@ -47,11 +47,5 @@ class ReservationController extends AbstractController
             'controller_name' => 'ReservationController',
             'stations' => $stations,
         ]);
-    }
-
-    #[Route('/reservation/success', name: 'app_reservation_success')]
-    public function success(): Response
-    {
-        return $this->render('reservation/success.html.twig');
     }
 }
