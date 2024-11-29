@@ -24,6 +24,7 @@ final class Version20241126190537 extends AbstractMigration
         $this->addSql('ALTER TABLE user ADD is_blocked TINYINT(1) NOT NULL, ADD must_change_password TINYINT(1) NOT NULL');
     }
 
+
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
