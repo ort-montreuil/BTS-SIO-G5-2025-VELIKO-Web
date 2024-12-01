@@ -65,10 +65,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $token = null;
 
     #[ORM\Column]
-    private ?bool $isBlocked = null;
+    private ?bool $isBlocked = false;
 
     #[ORM\Column]
-    private ?bool $mustChangePassword = null;
+    private ?bool $mustChangePassword = false;
 
 
     public function getId(): ?int
