@@ -22,6 +22,11 @@ class HomeController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    #[Route('/blocked', name: 'app_blocked')]
+    public function blocked(): Response
+    {
+        return $this->render('home/blocked.html.twig');
+    }
     #[Route('/forced', name: 'app_forced')]
     public function forced(): Response
     {
@@ -51,7 +56,6 @@ class HomeController extends AbstractController
         $newPassword = $request->request->get('new_password');
         $confirmPassword = $request->request->get('confirm_password');
 
-        // Check if the new password matches the confirmation password
         if ($newPassword !== $confirmPassword) {
             $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
             return $this->redirectToRoute('app_forced');
@@ -86,6 +90,9 @@ class HomeController extends AbstractController
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $user = $this->getUser();
+            if ($user->isBlocked()) {
+                return $this->redirectToRoute('app_blocked');
+            }
             if ($user->isMustChangePassword()) {
                 return $this->redirectToRoute('app_forced');
             }
