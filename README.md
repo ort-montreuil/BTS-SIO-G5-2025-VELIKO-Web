@@ -113,6 +113,16 @@ Puis cliquez sur le lien pour accéder au projet
 ```bash
 symfony server:stop
 ```
+### **Remplir la base de donnée**
+
+Utiliser la commande pour remplir la base de donnée
+
+```bash
+symfony console d:f:l
+```
+> ⚠️ **Important :** : Le mot de passe de tous les utilisateurs et de l'admin est `Bonjour12345!`
+> L'adresse mail est renseigner dans la base de donnée directement
+
 
 ---
 
