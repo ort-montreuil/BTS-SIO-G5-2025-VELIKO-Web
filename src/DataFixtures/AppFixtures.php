@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
     {
         $user = new User();
         $user->setEmail("user-admin-@gmail.dev");
-        $user->setPassword($this->hasher->hashPassword($user, "password"));
+        $user->setPassword($this->hasher->hashPassword($user, "Bonjour12345!"));
         $user->setRoles(["ROLE_ADMIN"]);
         $user->setNom("nom-admin");
         $user->setPrenom("prenom-admin");
@@ -37,7 +37,11 @@ class AppFixtures extends Fixture
         $user->setCodePostal("92100");
         $user->setLastPasswordChanged(new \DateTime());
         $user->setVille("ville-admin");
-        $user->setVerified(false);
+        $user->setVerified(true);
+        $user->setBlocked(false);
+        $user->setMustChangePassword(false);
+
+
         $manager->persist($user);
         for ($i=1; $i<=10; $i++)
         {
