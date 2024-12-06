@@ -38,7 +38,7 @@ services:
       - database
   mailer:
     container_name: veliko-mailer
-    image: axllent/mailpit
+    image: axllent/mailpit:latest
     ports:
       - "1025:1025"
       - "8025:8025"
