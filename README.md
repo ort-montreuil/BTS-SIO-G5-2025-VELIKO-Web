@@ -113,7 +113,7 @@ Puis cliquez sur le lien pour accéder au projet
 ```bash
 symfony server:stop
 ```
-### **Remplir la base de donnée**
+### 7️⃣ **Remplir la base de donnée**
 
 Utiliser la commande pour remplir la base de donnée
 
@@ -121,7 +121,12 @@ Utiliser la commande pour remplir la base de donnée
 symfony console d:f:l
 ```
 > ⚠️ **Important :** : Le mot de passe de tous les utilisateurs et de l'admin est `Bonjour12345!`
-> L'adresse mail est renseigner dans la base de donnée directement
+> L'adresse mail est renseigner dans la base de donnée directement 
+---
+> ⚠️ **Important :** : Si les fixtures ont était faites il faut faire la commande suivante pour restructuré la table des stations `
+```bash
+php bin/console app:fetch-stations
+```
 
 
 ---
