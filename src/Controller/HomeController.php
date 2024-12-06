@@ -27,7 +27,8 @@ class HomeController extends AbstractController
     {
         return $this->render('home/blocked.html.twig');
     }
-    #[Route('/forced', name: 'app_forced')]
+    #[Route('/forced', name: 'app_
+    d')]
     public function forced(): Response
     {
         return $this->render('home/forced.html.twig');

@@ -78,6 +78,12 @@ class Reservation
         return $this->heureFin;
     }
 
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     public function setHeureFin(\DateTimeInterface $heureFin): static
     {
         $this->heureFin = $heureFin;
@@ -89,6 +95,7 @@ class Reservation
     {
         return $this->idStationDepart;
     }
+
 
     public function setIdStationDepart(string $idStationDepart): static
     {
