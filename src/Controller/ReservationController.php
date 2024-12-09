@@ -25,6 +25,11 @@ class ReservationController extends AbstractController
     #[Route('/reservation', name: 'app_reservation', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
+        $user = $this->getUser();
+        if ($user && $user->isMustChangePassword()) {
+            return $this->redirectToRoute('app_forced');
+        }
+
         if ($request->isMethod('POST')) {
             $reservation = new Reservation();
             $reservation->setEmailUser($this->getUser()->getEmail());

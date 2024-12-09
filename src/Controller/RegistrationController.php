@@ -29,7 +29,13 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
+        $user = $security->getUser(); //récupère l'user déjà connecté
+
+        if ($user && $user->isMustChangePassword()) {
+            return $this->redirectToRoute('app_forced');
+        }
+
+        $user = new User(); //définis l'user comme un objet user pour le formulaire
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -74,7 +80,6 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
-
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {

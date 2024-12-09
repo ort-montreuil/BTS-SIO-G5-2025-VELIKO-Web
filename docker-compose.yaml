@@ -40,7 +40,7 @@ services:
     container_name: veliko-mailer
     image: axllent/mailpit:latest
     ports:
-      - "1025:1025"
+      - "1025"
       - "8025:8025"
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: "1"
