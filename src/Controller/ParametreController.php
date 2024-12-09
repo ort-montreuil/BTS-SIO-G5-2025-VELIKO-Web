@@ -21,6 +21,10 @@ class ParametreController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, ?string $action, TokenStorageInterface $tokenStorage, SessionInterface $session): Response
     {
         $user = $this->getUser();
+        if ($user && $user->isMustChangePassword()) {
+            return $this->redirectToRoute('app_forced');
+        }
+
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }

@@ -32,6 +32,11 @@ class MesStationsController extends AbstractController
         // Récupérer l'utilisateur connecté
         /** @var User $user */ //sans cela, $user n'est pas reconnu comme un objet de la classe "User"
         $user = $this->getUser();
+
+        if ($user && $user->isMustChangePassword()) {
+            return $this->redirectToRoute('app_forced');
+        }
+
         $userId = $user->getId();
         /** @var StationUserRepository $stationUserRepository */
         $stationUserRepository = $this->entityManager->getRepository(StationUser::class);

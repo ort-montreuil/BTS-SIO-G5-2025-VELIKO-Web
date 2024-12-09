@@ -48,6 +48,10 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
+
+        .link-danger {
+             color: #dc3545 !important; /* Bootstrap's danger color */
+         }
     </style>
 
     <div class="card">
@@ -58,5 +62,6 @@
             <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirmer le mot de passe" required>
             <button type="submit" class="btn-primary">Changer le mot de passe</button>
         </form>
+        <a href="{{ path('app_logout') }}" class="link-danger">Se déconnecter</a>
     </div>
 {% endblock %}

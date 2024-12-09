@@ -30,6 +30,13 @@ class StationFavorisController extends AbstractController
         $stations = $response->toArray();
         $favoriteStationIds = [];
 
+        $user = $this->getUser();
+        if ($user && $user->isMustChangePassword()) {
+            return $this->redirectToRoute('app_forced');
+        }
+
+
+
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $userId = $this->getUser()->getId();
             $favoriteStations = $stationUserRepository->findStationsByUserId($userId);
