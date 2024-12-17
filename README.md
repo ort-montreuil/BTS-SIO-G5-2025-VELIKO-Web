@@ -1,5 +1,12 @@
 # 🚴‍♂️ **Projet Veliko**
 
+
+##  **Les collaborateurs**
+
+Les personnes ayant travaillé sur le projet sont Noam Baroukh et Aaron Edery.
+
+---
+
 ## 🌟 **Description du projet**
 Le projet Veliko permet d'ajouter des stations de vélos à vos favoris et de les visualiser sur une carte interactive.
 Il inclut un système d'inscription/connexion, des informations sur la météo, la géolocalisation, et le nombre de vélos 
