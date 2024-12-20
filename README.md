@@ -1,4 +1,4 @@
-# 🚴‍♂️ **Projet Veliko TEST**
+# 🚴‍♂️ **Projet Veliko**
 
 
 ##  **Les collaborateurs**
