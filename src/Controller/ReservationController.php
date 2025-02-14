@@ -10,6 +10,7 @@ use App\Entity\StationUser;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Reservation;
+use function Symfony\Component\String\b;
 
 class ReservationController extends AbstractController
 {
@@ -41,6 +42,27 @@ class ReservationController extends AbstractController
 
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
+            $idStationDepart = $reservation->getIdStationDepart();
+            $idStationFin = $reservation->getIdStationDepart();
+            $velos = $this->client->request('GET', $_ENV['API_VELIKO_URL'] . "/velos");
+            $velos = $velos->toArray();
+            $auth_token = json_decode(file_get_contents("../var/api/configDataset.json"), true)['token']['default'];
+            foreach ($velos as $velo)
+            {
+                if ($velo['station_id_available'] == $idStationDepart && $velo['status'] == "available")
+                {
+                    $this->client->request("PUT", $_ENV['API_VELIKO_URL'] . "/velo/" . $velo['velo_id'] . "/location", [
+                        'headers' => ["Authorization" => $auth_token]
+                    ]);
+
+                    break;
+                }
+//                if ($velo['station_id_available'] == $idStationDepart && $velo['status'] == "location")
+//                {
+//
+//                    break;
+//                }
+            }
 
             return $this->redirectToRoute('app_home');
         }
