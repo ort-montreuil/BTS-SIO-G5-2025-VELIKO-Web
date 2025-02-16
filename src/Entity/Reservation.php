@@ -32,6 +32,9 @@ class Reservation
     #[ORM\Column(type: Types::BIGINT)]
     private ?string $idStationArrivee = null;
 
+    #[ORM\Column]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,6 +115,18 @@ class Reservation
     public function setIdStationArrivee(string $idStationArrivee): static
     {
         $this->idStationArrivee = $idStationArrivee;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

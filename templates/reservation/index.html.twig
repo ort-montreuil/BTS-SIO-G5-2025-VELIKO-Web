@@ -3,6 +3,14 @@
 {% block title %}Reservation{% endblock %}
 
 {% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <h1> Réservation</h1>
     <p>Veuillez saisir les informations pour pouvoir faire une réservation</p>
     <br>
@@ -38,6 +46,14 @@
                 {% for station in stations %}
                     <option value="{{ station.station_id }}">{{ station.name }}</option>
                 {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div>
+            <label for="type">Type de vélo : </label>
+            <select id="type" name="type" required>
+                <option value="mechanical">Vélo mécanique</option>
+                <option value="ebike">Vélo électrique</option>
             </select>
         </div>
         <br>

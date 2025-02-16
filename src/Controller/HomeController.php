@@ -158,6 +158,13 @@ class HomeController extends AbstractController
             $favoriteStationIds = array_column($favoriteStations, 'idStation');
         }
 
+        if(isset($_SESSION["flash"]))
+        {
+            $message = $_SESSION["flash"];
+            unset($_SESSION["flash"]);
+            echo $message;
+        }
+
         return $this->render('home/index.html.twig', [
             'titre' => 'Carte OpenStreetMap',
             'stations' => $stations,
