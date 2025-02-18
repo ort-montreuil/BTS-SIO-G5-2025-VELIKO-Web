@@ -19,6 +19,15 @@ class StationRepository extends ServiceEntityRepository
         parent::__construct($registry, Station::class);
     }
 
+    public function getStationNameById($idStation)
+    {
+        return $this->createQueryBuilder("s")
+            ->andWhere("s.station_id = :idStation")
+            ->setParameter("idStation", $idStation)
+            ->select("s.name")
+            ->getQuery()
+            ->getArrayResult();
+    }
 
     //    /**
     //     * @return Station[] Returns an array of Station objects

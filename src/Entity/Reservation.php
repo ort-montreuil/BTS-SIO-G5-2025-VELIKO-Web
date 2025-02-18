@@ -130,4 +130,16 @@ class Reservation
 
         return $this;
     }
+
+    public function getClearType($type):string
+    {
+        if ($this->type == "ebike")
+        {
+            return "Électrique";
+        }
+        else
+        {
+            return "Mécanique";
+        }
+    }
 }

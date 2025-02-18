@@ -59,4 +59,10 @@
         <br>
         <button type="submit" id="submit" class="btn btn-lg btn-primary">Réserver</button>
     </form>
+
+    <br>
+
+    <form class="d-flex w-100" method="GET" action="{{ path('app_see_reservations') }}">
+        <button type="submit" class="btn btn-info">Voir mes réservations</button>
+    </form>
 {% endblock %}

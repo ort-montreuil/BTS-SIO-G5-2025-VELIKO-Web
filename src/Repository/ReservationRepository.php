@@ -16,6 +16,21 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
+    /**
+     * Retrieves an array of Reservation objects for a given user email.
+     *
+     * @param string $email The email of the user whose reservations are to be retrieved.
+     * @return array An array of Reservation objects ordered by date in ascending order.
+     */
+    public function getReservationsByUserEmail(string $email): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.emailUser = :email')
+            ->setParameter('email', $email)
+            ->orderBy('r.Date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */
