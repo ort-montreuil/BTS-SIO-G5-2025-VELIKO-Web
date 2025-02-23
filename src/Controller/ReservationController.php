@@ -50,6 +50,10 @@ class ReservationController extends AbstractController
                                 'headers' => ["Authorization" => $auth_token]
                             ]);
                             $this->addFlash('success', "Votre réservation a été effectuée avec succès");
+                            $this->client->request("PUT", $_ENV['API_VELIKO_URL'] . "/velo/" . $velo['velo_id'] . "/restore/" . $idStationFin, [
+                                'headers' => ["Authorization" => $auth_token],
+                            ]);
+
                             break;
                         }
                     }
@@ -85,5 +89,6 @@ class ReservationController extends AbstractController
             'controller_name' => 'ReservationController',
             'stations' => $stations,
         ]);
+
     }
 }
