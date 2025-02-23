@@ -39,12 +39,13 @@ class ReservationController extends AbstractController
             $velos = $velos->toArray();
             $auth_token = json_decode(file_get_contents("../var/api/configDataset.json"), true)['token']['default'];
 
+            $veloFound = false;
+
             foreach ($velos as $velo) {
                 if ($velo['station_id_available'] == $idStationDepart) {
-                    if($velo['status'] == "available"){
+                    if ($velo['status'] == "available") {
                         if ($velo['type'] != $request->get('type')) {
-                            $this->addFlash('danger', "Le type de vélo que vous avez choisi n'est pas disponible à cette station");
-                            return $this->redirectToRoute('app_reservation');
+                            continue;
                         } else {
                             $this->client->request("PUT", $_ENV['API_VELIKO_URL'] . "/velo/" . $velo['velo_id'] . "/location", [
                                 'headers' => ["Authorization" => $auth_token]
@@ -53,19 +54,21 @@ class ReservationController extends AbstractController
                             $this->client->request("PUT", $_ENV['API_VELIKO_URL'] . "/velo/" . $velo['velo_id'] . "/restore/" . $idStationFin, [
                                 'headers' => ["Authorization" => $auth_token],
                             ]);
-
+                            $veloFound = true;
                             break;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         /** @var StationRepository $stationRepository */
                         $stationRepository = $this->entityManager->getRepository(Station::class);
                         $this->addFlash("danger", "Aucun vélo n'est disponible dans la station " . $stationRepository->getStationNameById($velo['station_id_available'])[0]["name"]);
                         return $this->redirectToRoute('app_reservation');
                     }
-
                 }
+            }
+
+            if (!$veloFound) {
+                $this->addFlash('danger', "Le type de vélo que vous avez choisi n'est pas disponible à cette station");
+                return $this->redirectToRoute('app_reservation');
             }
 
             $reservation = new Reservation();
@@ -79,7 +82,7 @@ class ReservationController extends AbstractController
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_reservation');
         }
 
         $response = $this->client->request('GET', $_ENV['API_VELIKO_URL'] . "/stations");
