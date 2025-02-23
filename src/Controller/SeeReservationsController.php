@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\ReservationRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Reservation;
 use App\Entity\Station;
 use App\Repository\StationRepository;
@@ -9,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SeeReservationsController extends AbstractController
@@ -49,5 +53,19 @@ class SeeReservationsController extends AbstractController
             'controller_name' => 'SeeReservationsController',
             "reservations" => $reservations
         ]);
+    }
+    #[Route('/see/reservations/cancel/{id}', name: 'app_cancel_reservation')]
+    public function cancel(Request $request): RedirectResponse
+    {
+        if ($request->isMethod("POST"))
+        {
+            $idReservation = $request->get("id");
+            /** @var ReservationRepository $reservationRepository */
+            $reservationRepository = $this->entityManager->getRepository(Reservation::class);
+            $reservationRepository->deleteReservationById($idReservation);
+            $this->entityManager->flush();
+            $this->addFlash("success","Votre réservation a été annulée avec succès.");
+        }
+        return $this->redirectToRoute("app_see_reservations");
     }
 }

@@ -31,6 +31,15 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function deleteReservationById(int $idReservation)
+    {
+        return $this->createQueryBuilder('r')
+            ->delete()
+            ->andWhere("r.id = :idReservation")
+            ->setParameter("idReservation", $idReservation)
+            ->getQuery()
+            ->execute();
+    }
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */

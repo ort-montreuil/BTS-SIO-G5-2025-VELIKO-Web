@@ -3,6 +3,15 @@
 {% block title %}Hello SeeReservationsController!{% endblock %}
 
 {% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <style>
         .reservation-list {
             list-style-type: none;
@@ -39,12 +48,15 @@
     {% for reservation in reservations %}
         <ul class="reservation-list">
             <li class="reservation-item">
-                <p><span>Date :</span> {{ reservation.date|date('d-m-Y') }}</p>
-                <p><span>Heure de début :</span> {{ reservation.heureDebut|date('H:i') }}</p>
-                <p><span>Heure de fin :</span> {{ reservation.heureFin|date('H:i') }}</p>
-                <p><span>Station de départ :</span> {{ reservation.idStationDepart }}</p>
-                <p><span>Station d'arrivée :</span> {{ reservation.idStationArrivee }}</p>
-                <p><span>Type du vélo :</span> {{ reservation.type }}</p>
+                    <p><span>Date :</span> {{ reservation.date|date('d-m-Y') }}</p>
+                    <p><span>Heure de début :</span> {{ reservation.heureDebut|date('H:i') }}</p>
+                    <p><span>Heure de fin :</span> {{ reservation.heureFin|date('H:i') }}</p>
+                    <p><span>Station de départ :</span> {{ reservation.idStationDepart }}</p>
+                    <p><span>Station d'arrivée :</span> {{ reservation.idStationArrivee }}</p>
+                    <p><span>Type du vélo :</span> {{ reservation.type }}</p>
+                <form method="POST" action="{{ path('app_cancel_reservation', {'id': reservation.id}) }}">
+                    <button type="submit" class="btn btn-danger">Annuler</button>
+                </form>
             </li>
         </ul>
     {% endfor %}
