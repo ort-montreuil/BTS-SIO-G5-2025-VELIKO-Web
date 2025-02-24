@@ -79,8 +79,18 @@ class ReservationController extends AbstractController
             $reservation->setIdStationDepart($idStationDepart);
             $reservation->setIdStationArrivee($idStationFin);
             $reservation->setType($request->get('type'));
-            $this->entityManager->persist($reservation);
-            $this->entityManager->flush();
+            if ($reservation->getHeureFin() < $reservation->getHeureDebut()) {
+                $request->getSession()->getFlashBag()->clear();
+                $this->addFlash("danger", "L'heure de fin ne peut pas être inférieur à la date de début");
+                return $this->redirectToRoute("app_reservation");
+            } elseif ($reservation->getDate() < new DateTime()) {
+                $request->getSession()->getFlashBag()->clear();
+                $this->addFlash("danger", "La date de réservation ne peut pas être antérieure à la date actuelle");
+                return $this->redirectToRoute("app_reservation");
+            } else {
+                $this->entityManager->persist($reservation);
+                $this->entityManager->flush();
+            }
 
             return $this->redirectToRoute('app_reservation');
         }
