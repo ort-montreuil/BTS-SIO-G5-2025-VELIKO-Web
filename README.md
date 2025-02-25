@@ -62,19 +62,19 @@ docker-compose down
 
 ### 4️⃣ **Modification du fichier [.env](#.env)**
 
-Copiez le fichier `.env.example` et renommez-le-en `.env`. Modifiez les variables d'environnement suivant :
+Copiez le contenu du fichier `.env.example` et créez un nouveau fichier `.env` (ou bien, renommez `.env.example` en `.env`). Modifiez les variables d'environnement suivant :
 
 ```
 DATABASE_URL="mysql://id:mdp@127.0.0.1:3306/app_db?serverVersion=11.5.2-MariaDB&charset=utf8mb4"
 ```
 
-Id est le nom d'utilisateur et mdp le mot de passe de la base de données
+"id" est le nom d'utilisateur (par défaut "root") et mdp le mot de passe de la base de données (aussi root par défaut, modifiable dans docker-compose.yaml ligne 16).
 
 127.0.0.1:3306 est l'adresse IP et le port de la base de données
 
 app_db est le nom de la base de données
 
-serverVersion=11.5.2 est la version de la base de données : (assurez de mettre la bonne version)
+serverVersion=11.5.2 est la version de la base de données : (assurez-vous de mettre la bonne version)
 
 ```
 MAILER_DSN="smtp://**********:********@sandbox.smtp.mailtrap.io:2525"  
@@ -91,18 +91,21 @@ Pour remplir la variable API_METEO dans le fichier .env, vous devez créer un co
 
 ### 5️⃣ **Migration de la base de donnée**
 
-Créez une migration pour la base de données :
+Une migration est déjà disponible contenant la bonne structure de base de données.
+Exécutez-la [migration](#migration) pour remplir la base de données :
 
 ```bash
-php bin/console make:migration
+symfony console doctrine:migrations:migrate
 ```
 
-Exécutez-la [migrations](#migration) que vous venez de créer pour préparer la base de données et changez "le_nom_de_la_migration" par le nom de la migration (sans mettre le .php) que vous avez créé :
+Si vous modifiez les entités et souhaitez créer une migration pour la base de données :
 
 ```bash
-php bin/console doctrine:migrations:execute DoctrineMigrations\le_nom_de_la_migration
+symfony console make:migration
 ```
+Et répétez la commande précédente juste après.
 
+Afin de remplir la table "station" de la base de donnée, lancez cette commande :
 ```bash
 php bin/console app:fetch-stations
 ```
@@ -128,9 +131,9 @@ Utiliser la commande pour remplir la base de donnée
 symfony console d:f:l
 ```
 > ⚠️ **Important :** : Le mot de passe de tous les utilisateurs et de l'admin est `Bonjour12345!`
-> L'adresse mail est renseigner dans la base de donnée directement 
+> L'adresse mail est renseigné dans la base de donnée directement 
 ---
-> ⚠️ **Important :** : Si les fixtures ont était faites il faut faire la commande suivante pour restructuré la table des stations `
+> ⚠️ **Important :** : Si les fixtures ont été faites, il faut faire la commande suivante pour restructurer la table des stations `
 ```bash
 php bin/console app:fetch-stations
 ```
