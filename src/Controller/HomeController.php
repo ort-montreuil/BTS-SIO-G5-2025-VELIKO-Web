@@ -7,14 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class HomeController extends AbstractController
 {
     private StationUserRepository $stationUserRepository;
-    private EntityManagerInterface $entityManager;
+    private EntityManagerInterface $entityManager; //utile pour les opérations de base de données
 
     public function __construct(StationUserRepository $stationUserRepository, EntityManagerInterface $entityManager)
     {
@@ -22,11 +22,12 @@ class HomeController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/blocked', name: 'app_blocked')]
+    #[Route('/blocked', name: 'app_blocked')] //route pour la page bloquée
     public function blocked(): Response
     {
         return $this->render('home/blocked.html.twig');
     }
+
     #[Route('/forced', name: 'app_forced')]
     public function forced(): Response
     {
@@ -45,10 +46,10 @@ class HomeController extends AbstractController
         return $this->render('home/loading.html.twig');
     }
 
-    #[Route('/change-password', name: 'app_change_password', methods: ['POST'])]
+    #[Route('/change-password', name: 'app_change_password', methods: ['POST'])] //route pour changer le mot de passe
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) { //on vérifie si l'utilisateur est connecté
             throw new AccessDeniedException();
         }
 
@@ -56,39 +57,39 @@ class HomeController extends AbstractController
         $newPassword = $request->request->get('new_password');
         $confirmPassword = $request->request->get('confirm_password');
 
-        if ($newPassword !== $confirmPassword) {
+        if ($newPassword !== $confirmPassword) { //on vérifie si les deux mots de passe correspondent
             $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
             return $this->redirectToRoute('app_forced');
         }
 
-        // Check if the new password meets the requirements
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/', $newPassword)) {
+        //vérifie si le mot de passe respecte les critères de sécurité
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/', $newPassword)) { //les critères sont : au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
             $this->addFlash('error', 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
             return $this->redirectToRoute('app_forced');
         }
 
-        // Check if the new password is different from the current password
+        //vérifie si le nouveau mot de passe est différent de l'ancien
         if ($passwordHasher->isPasswordValid($user, $newPassword)) {
             $this->addFlash('error', 'Le nouveau mot de passe ne peut pas être identique à l\'ancien mot de passe.');
             return $this->redirectToRoute('app_forced');
         }
 
-        // Encode the new password and update the user
-        $encodedPassword = $passwordHasher->hashPassword($user, $newPassword);
+        //hashage du mot de passe
+        $encodedPassword = $passwordHasher->hashPassword($user, $newPassword); //on hash le mot de passe
         $user->setPassword($encodedPassword);
         $user->setMustChangePassword(false);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->entityManager->persist($user); //on persiste les changements
+        $this->entityManager->flush(); //on enregistre les changements
 
         $this->addFlash('success', 'Votre mot de passe a été changé avec succès.');
         return $this->redirectToRoute('app_home');
     }
 
-    #[Route('/home', name: 'app_home')]
+    #[Route('/home', name: 'app_home')] //route pour la page d'accueil
     public function execute(Request $request): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { //on vérifie si l'utilisateur est connecté
             $user = $this->getUser();
             if ($user->isBlocked()) {
                 return $this->redirectToRoute('app_blocked');
@@ -109,11 +110,11 @@ class HomeController extends AbstractController
             CURLOPT_POSTFIELDS => "",
             CURLOPT_SSL_VERIFYPEER => false
         ]);
-        $stations_informations = curl_exec($curl);
+        $stations_informations = curl_exec($curl); //cette variable contient les informations des stations
         $err = curl_error($curl);
         curl_close($curl);
 
-        $stations_informations = json_decode($stations_informations, true);
+        $stations_informations = json_decode($stations_informations, true); //une array associative contient une paire clé-valeur rendant les données plus faciles à manipuler
 
         $curl2 = curl_init();
         curl_setopt_array($curl2, [
@@ -126,7 +127,7 @@ class HomeController extends AbstractController
             CURLOPT_POSTFIELDS => "",
             CURLOPT_SSL_VERIFYPEER => false
         ]);
-        $stations_statuts = curl_exec($curl2);
+        $stations_statuts = curl_exec($curl2); //cette variable contient les statuts des stations
         $err2 = curl_error($curl2);
         curl_close($curl2);
 
@@ -134,8 +135,8 @@ class HomeController extends AbstractController
         $stations_statuts = json_decode($stations_statuts, true);
 
         foreach ($stations_informations as $infostat) {
-            foreach ($stations_statuts as $infovelo) {
-                if ($infostat['station_id'] == $infovelo['station_id']) {
+            foreach ($stations_statuts as $infovelo) { //ces boucles imbriquées permettent de comparer les données des deux API
+                if ($infostat['station_id'] == $infovelo['station_id']) { //on vérifie si les identifiants des stations correspondent (pour que les données ne soient pas mélangées).
                     $stations_data = [
                         'nom' => $infostat['name'],
                         'lat' => $infostat['lat'],
@@ -152,14 +153,14 @@ class HomeController extends AbstractController
         }
 
         $favoriteStationIds = [];
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { //on vérifie si l'utilisateur est connecté
             $userId = $this->getUser()->getId();
-            $favoriteStations = $this->stationUserRepository->findStationsByUserId($userId);
+            $favoriteStations = $this->stationUserRepository->findStationsByUserId($userId); //on récupère les stations favorites de l'utilisateur
             $favoriteStationIds = array_column($favoriteStations, 'idStation');
+            //on récupère les identifiants des stations favorites de l'utilisateur, cela permettra de vérifier si l'user a une station en favori et donc d'afficher sur la carte "ajouter en favori" ou "retirer des favoris" selon le cas
         }
 
-        if(isset($_SESSION["flash"]))
-        {
+        if (isset($_SESSION["flash"])) { //on affiche le message flash s'il existe
             $message = $_SESSION["flash"];
             unset($_SESSION["flash"]);
             echo $message;

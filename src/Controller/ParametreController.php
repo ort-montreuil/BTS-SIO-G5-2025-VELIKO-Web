@@ -21,14 +21,14 @@ class ParametreController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, ?string $action, TokenStorageInterface $tokenStorage, SessionInterface $session): Response
     {
         $user = $this->getUser();
-        if ($user && $user->isMustChangePassword()) {
+        if ($user && $user->isMustChangePassword()) { // Rediriger l'utilisateur s'il doit changer son mot de passe
             return $this->redirectToRoute('app_forced');
         }
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-
+        // Définir les paramètres disponibles
         $parametres = [
             ['id' => 1, 'name' => 'Changer d\'attribut'],
             ['id' => 2, 'name' => 'Changer de mot de passe'],
@@ -39,10 +39,11 @@ class ParametreController extends AbstractController
 
         $form = null;
         $showLogoutConfirmation = false;
-
+        // Gérer les différentes actions
         if ($action === 'changer-attribut') {
+            // Créer un formulaire pour changer les attributs de l'utilisateur et l'afficher dans le twig sans créer un nouveau fichier twig
             $form = $this->createFormBuilder($user)
-                ->add('nom', TextType::class, ['data' => $user->getNom()])
+                ->add('nom', TextType::class, ['data' => $user->getNom()]) //on ajoute les champs du formulaire
                 ->add('prenom', TextType::class, ['data' => $user->getPrenom()])
                 ->add('adresse', TextType::class, ['data' => $user->getAdresse()])
                 ->add('code_postal', TextType::class, ['data' => $user->getCodePostal()])
@@ -52,18 +53,19 @@ class ParametreController extends AbstractController
                 ])
                 ->getForm();
 
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->flush();
+            $form->handleRequest($request); //on vérifie si le formulaire a été soumis
+            if ($form->isSubmitted() && $form->isValid()) { //on vérifie si le formulaire est valide
+                $entityManager->flush(); //on enregistre les modifications
                 $this->addFlash('success', 'Vos informations ont été mises à jour avec succès.');
                 return $this->redirectToRoute('app_parametre');
             }
         } elseif ($action === 'changer-mot-de-passe') {
+            // Créer un formulaire pour changer le mot de passe, même principe que pour changer les attributs
             $form = $this->createForm(PasswordChange::class);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $oldPassword = $form->get('entrezVotreAncienMotDePasse')->getData();
+            if ($form->isSubmitted() && $form->isValid()) { //on vérifie si le formulaire est valide
+                $oldPassword = $form->get('entrezVotreAncienMotDePasse')->getData(); //on récupère les données du formulaire
                 $newPassword = $form->get('entrezVotreNouveauMotDePasse')->getData();
 
                 // Vérification de l'ancien mot de passe
@@ -71,7 +73,7 @@ class ParametreController extends AbstractController
                     // Vérification des conditions du nouveau mot de passe
                     $passwordConditions = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/';
 
-                    if (!preg_match($passwordConditions, $newPassword)) {
+                    if (!preg_match($passwordConditions, $newPassword)) { //on vérifie si le mot de passe respecte les conditions
                         $this->addFlash('error', 'Le nouveau mot de passe doit contenir au moins 12 caractères, 1 majuscule, 1 chiffre, et 1 caractère spécial.');
                     } elseif ($oldPassword === $newPassword) {
                         $this->addFlash('error', 'Le nouveau mot de passe doit être différent de l\'ancien mot de passe.');
@@ -88,8 +90,9 @@ class ParametreController extends AbstractController
             }
 
         } elseif ($action === 'deconnexion') {
-            $showLogoutConfirmation = true;
+            $showLogoutConfirmation = true; // Afficher un message de confirmation pour la déconnexion
         } elseif ($action === 'supprimer-compte') {
+            // Créer un formulaire pour supprimer le compte
             $form = $this->createFormBuilder()
                 ->add('password', PasswordType::class, [
                     'label' => 'Entrez votre mot de passe pour confirmer',
@@ -107,18 +110,7 @@ class ParametreController extends AbstractController
                 $password = $form->get('password')->getData();
 
                 if ($passwordHasher->isPasswordValid($user, $password)) {
-                    // Hachage des attributs avant suppression
-                    $hashedNom = hash('sha256', $user->getNom());
-                    $hashedPrenom = hash('sha256', $user->getPrenom());
-                    $hashedDateNaissance = hash('sha256', $user->getDateNaissance()->format('Y-m-d'));
-
-                    $hashedAdresse = substr(hash('sha256', $user->getAdresse()), 0, 45);
-
-                    $hashedVille = $user->getVille();
-                    $hashedCodePostal = $user->getCodePostal();
-
-                    $hashedEmail = hash('sha256', $user->getEmail());
-
+                    // Anonymisation des données de l'utilisateur
                     $user->setNom('anonyme');
                     $user->setPrenom('anonyme');
                     $user->setAdresse('anonyme');
@@ -137,7 +129,7 @@ class ParametreController extends AbstractController
                 }
             }
         }
-
+        // Rendre la vue avec les paramètres et le formulaire (s'il existe)
         return $this->render('parametre/index.html.twig', [
             'parametres' => $parametres,
             'form' => $form ? $form->createView() : null,

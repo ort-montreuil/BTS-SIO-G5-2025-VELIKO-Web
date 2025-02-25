@@ -36,8 +36,8 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User(); //définis l'user comme un objet user pour le formulaire
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        $form = $this->createForm(RegistrationFormType::class, $user); //crée le formulaire d'inscription pour la classe User spécifiquement
+        $form->handleRequest($request); //vérifie si le formulaire a été soumis
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('plainPassword')->getData();
@@ -98,7 +98,7 @@ class RegistrationController extends AbstractController
         }
 
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $this->emailVerifier->handleEmailConfirmation($request, $user); //vérifie le token et l'adresse e-mail de l'utilisateur pour la confirmation
             $user->setToken(null);
             $user->setVerified(true);
             $entityManager->flush();
