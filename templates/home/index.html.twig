@@ -18,14 +18,14 @@
     <div id="map" style="height: 555px"></div>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
-    <script>
-        var mymap = L.map('map').setView([48.852969, 2.349903], 13);
+    <script> // script pour afficher les marqueurs sur la carte
+        var mymap = L.map('map').setView([48.852969, 2.349903], 13); // initialisation de la carte
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
+        }).addTo(mymap); // ajout de la carte
 
-        var markers = L.markerClusterGroup();
+        var markers = L.markerClusterGroup(); // initialisation des marqueurs
 
         // parcourir le 1er fichier json pour afficher les marqueurs
         {% for station in stations %}
@@ -33,25 +33,25 @@
         var longitude = '{{ station.lon }}';
         var marker = L.marker([latitude, longitude]);
 
-        marker.bindPopup('<form action="{{ path('app_station_favoris') }}" method="post">' +
+        marker.bindPopup('<form action="{{ path('app_station_favoris') }}" method="post">' + // formulaire pour ajouter une station en favori
             "Nom : {{ station.nom }}" +
             " <br> Nombres vélos total : {{ station.velodispo }}" +
             " <br> Nombre vélos électriques : {{ station.veloelec }}" +
             "<br> Nombre de vélos mécaniques : {{ station.velomecha }}" +
 
-            '{% if is_granted("IS_AUTHENTICATED_FULLY") %}' +
+            '{% if is_granted("IS_AUTHENTICATED_FULLY") %}' + // si l'utilisateur est connecté
             "<input type='hidden' id='idStations' name='idStations' value='{{ station.id }}'>" +
             "<br>" +
-            '{% if station.id in favoriteStationIds %}' +
+            '{% if station.id in favoriteStationIds %}' + // si la station est déjà en favori
             '<button type="submit" id="favori" name="favori" value="remove">Retirer des favoris</button>' +
-            '{% else %}' +
+            '{% else %}' + // si la station n'est pas en favori
             '<button type="submit" id="favori" name="favori" value="add">Ajouter au favori</button>' +
             '{% endif %}' +
-            '{% else %}' +
+            '{% else %}' + // si l'utilisateur n'est pas connecté
             '<p>Vous devez être connecté pour ajouter une station en favori.' +
             '{% endif %}' +
             '</form>');
-        marker.on('mouseover', function (e) {
+        marker.on('mouseover', function (e) { // afficher la popup au survol
             this.openPopup();
         });
         marker.on('click', function (e) {

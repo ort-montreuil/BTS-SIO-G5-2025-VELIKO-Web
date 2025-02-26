@@ -3,7 +3,7 @@
 {% block title %}Reservation{% endblock %}
 
 {% block body %}
-    {% for label, messages in app.flashes %}
+    {% for label, messages in app.flashes %} <!-- On affiche les messages flash -->
         {% for message in messages %}
             <div class="alert alert-{{ label }}">
                 {{ message }}
@@ -11,58 +11,58 @@
         {% endfor %}
     {% endfor %}
 
-    <h1> Réservation</h1>
-    <p>Veuillez saisir les informations pour pouvoir faire une réservation</p>
+    <h1> Réservation</h1> <!-- Titre de la page de réservation -->
+    <p>Veuillez saisir les informations pour pouvoir faire une réservation</p> <!-- Instructions pour l'utilisateur -->
     <br>
-    <form action="{{ path('app_reservation') }}" method="post">
+    <form action="{{ path('app_reservation') }}" method="post"> <!-- Formulaire de réservation -->
         <div>
-            <label for="date">Date : </label>
-            <input type="date" id="date" name="date" required>
+            <label for="date">Date : </label> <!-- Étiquette pour la date -->
+            <input type="date" id="date" name="date" required> <!-- Champ de saisie pour la date -->
         </div>
         <br>
         <div>
-            <label for="time">Heure du début : </label>
-            <input type="time" id="time" name="time" required>
+            <label for="time">Heure du début : </label> <!-- Étiquette pour l'heure de début -->
+            <input type="time" id="time" name="time" required> <!-- Champ de saisie pour l'heure de début -->
         </div>
         <br>
         <div>
-            <label for="time">Heure de fin : </label>
-            <label for="timeEnd"></label><input type="time" id="timeEnd" name="timeEnd" required>
+            <label for="time">Heure de fin : </label> <!-- Étiquette pour l'heure de fin -->
+            <label for="timeEnd"></label><input type="time" id="timeEnd" name="timeEnd" required> <!-- Champ de saisie pour l'heure de fin -->
         </div>
         <br>
         <div>
-            <label for="station">Station de départ : </label>
-            <select id="station" name="station" required>
+            <label for="station">Station de départ : </label> <!-- Étiquette pour la station de départ -->
+            <select id="station" name="station" required> <!-- Liste déroulante pour sélectionner la station de départ -->
                 {% for station in stations %}
-                    <option value="{{ station.station_id }}">{{ station.name }}</option>
+                    <option value="{{ station.station_id }}">{{ station.name }}</option> <!-- Option pour chaque station -->
                 {% endfor %}
             </select>
         </div>
         <br>
         <div>
-            <label for="station">Station d'arrivée :</label>
+            <label for="station">Station d'arrivée :</label> <!-- Étiquette pour la station d'arrivée -->
             <label for="stationEnd">
-            </label><select id="stationEnd" name="stationEnd" required>
+            </label><select id="stationEnd" name="stationEnd" required> <!-- Liste déroulante pour sélectionner la station d'arrivée -->
                 {% for station in stations %}
-                    <option value="{{ station.station_id }}">{{ station.name }}</option>
+                    <option value="{{ station.station_id }}">{{ station.name }}</option> <!-- Option pour chaque station -->
                 {% endfor %}
             </select>
         </div>
         <br>
         <div>
-            <label for="type">Type de vélo : </label>
-            <select id="type" name="type" required>
-                <option value="mechanical">Vélo mécanique</option>
-                <option value="ebike">Vélo électrique</option>
+            <label for="type">Type de vélo : </label> <!-- Étiquette pour le type de vélo -->
+            <select id="type" name="type" required> <!-- Liste déroulante pour sélectionner le type de vélo -->
+                <option value="mechanical">Vélo mécanique</option> <!-- Option pour vélo mécanique -->
+                <option value="ebike">Vélo électrique</option> <!-- Option pour vélo électrique -->
             </select>
         </div>
         <br>
-        <button type="submit" id="submit" class="btn btn-lg btn-primary">Réserver</button>
+        <button type="submit" id="submit" class="btn btn-lg btn-primary">Réserver</button> <!-- Bouton de soumission -->
     </form>
 
     <br>
 
-    <form class="d-flex w-100" method="GET" action="{{ path('app_see_reservations') }}">
-        <button type="submit" class="btn btn-info">Voir mes réservations</button>
+    <form class="d-flex w-100" method="GET" action="{{ path('app_see_reservations') }}"> <!-- Formulaire pour voir les réservations -->
+        <button type="submit" class="btn btn-info">Voir mes réservations</button> <!-- Bouton pour voir les réservations -->
     </form>
 {% endblock %}

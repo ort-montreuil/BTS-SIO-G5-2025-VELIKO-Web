@@ -3,39 +3,39 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <form method="post">
+    <form method="post"> <!-- Formulaire de connexion -->
         {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div> <!-- Affichage des erreurs de connexion -->
         {% endif %}
 
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a> <!-- Message si l'utilisateur est déjà connecté -->
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1> <!-- Titre du formulaire de connexion -->
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email</label> <!-- Étiquette pour le champ email -->
             <input type="email" value="{{ last_username|default('') }}" name="_email" id="email" class="form-control"
-                   autocomplete="email" required autofocus>
+                   autocomplete="email" required autofocus> <!-- Champ de saisie pour l'email -->
         </div>
         <br>
         <div class="form-group">
-            <label for="password">Mot de passe</label>
+            <label for="password">Mot de passe</label> <!-- Étiquette pour le champ mot de passe -->
             <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password"
-                   required>
+                   required> <!-- Champ de saisie pour le mot de passe -->
         </div>
 
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
-        >
+        > <!-- Jeton CSRF pour la sécurité -->
 
         <div class="d-flex justify-content-between align-items-center mt-3">
             <button class="btn btn-primary" type="submit">
-                Connexion
+                Connexion <!-- Bouton de soumission -->
             </button>
-            <a href="{{ path('app_forgot_password') }}" class="text-right">Mot de passe oublié ?</a>
+            <a href="{{ path('app_forgot_password') }}" class="text-right">Mot de passe oublié ?</a> <!-- Lien pour réinitialiser le mot de passe -->
         </div>
     </form>
 {% endblock %}

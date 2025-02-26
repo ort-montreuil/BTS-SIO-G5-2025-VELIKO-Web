@@ -4,6 +4,7 @@
 
 {% block body %}
 
+    {# Affiche les messages flash s'il y en a #}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ label }}">
@@ -13,11 +14,13 @@
     {% endfor %}
 
     <style>
+        /* Style pour la liste des réservations */
         .reservation-list {
             list-style-type: none;
             padding: 0;
         }
 
+        /* Style pour chaque élément de réservation */
         .reservation-item {
             background-color: #2c2c2c;
             border: 1px solid #444;
@@ -28,15 +31,18 @@
             color: #f8f9fa;
         }
 
+        /* Style pour l'effet de survol sur chaque élément de réservation */
         .reservation-item:hover {
             background-color: #3a3a3a;
         }
 
+        /* Style pour les paragraphes à l'intérieur de chaque élément de réservation */
         .reservation-item p {
             margin: 0;
             padding: 5px 0;
         }
 
+        /* Style pour les spans à l'intérieur des paragraphes de réservation */
         .reservation-item p span {
             font-weight: bold;
             color: #ffffff;
@@ -44,16 +50,25 @@
 
     </style>
 
+    {# Vérifie s'il y a des réservations #}
     {% if reservations %}
-    {% for reservation in reservations %}
-        <ul class="reservation-list">
-            <li class="reservation-item">
+        {# Boucle sur chaque réservation #}
+        {% for reservation in reservations %}
+            <ul class="reservation-list">
+                <li class="reservation-item">
+                    {# Affiche la date de la réservation #}
                     <p><span>Date :</span> {{ reservation.date|date('d-m-Y') }}</p>
+                    {# Affiche l'heure de début de la réservation #}
                     <p><span>Heure de début :</span> {{ reservation.heureDebut|date('H:i') }}</p>
+                    {# Affiche l'heure de fin de la réservation #}
                     <p><span>Heure de fin :</span> {{ reservation.heureFin|date('H:i') }}</p>
+                    {# Affiche la station de départ de la réservation #}
                     <p><span>Station de départ :</span> {{ reservation.idStationDepart }}</p>
+                    {# Affiche la station d'arrivée de la réservation #}
                     <p><span>Station d'arrivée :</span> {{ reservation.idStationArrivee }}</p>
+                    {# Affiche le type de vélo de la réservation #}
                     <p><span>Type du vélo :</span> {{ reservation.type }}</p>
+                {# Formulaire pour annuler la réservation #}
                 <form method="POST" action="{{ path('app_cancel_reservation', {'id': reservation.id}) }}">
                     <button type="submit" class="btn btn-danger">Annuler</button>
                 </form>
@@ -61,6 +76,7 @@
         </ul>
     {% endfor %}
     {% else %}
+        {# Message affiché s'il n'y a aucune réservation #}
         <p>Vous n'avez aucune réservation.</p>
     {% endif %}
 {% endblock %}

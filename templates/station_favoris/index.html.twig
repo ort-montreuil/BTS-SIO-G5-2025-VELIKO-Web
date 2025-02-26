@@ -3,13 +3,16 @@
 {% block title %}Station Favoris{% endblock %}
 
 {% block stylesheets %}
+    <!-- Inclusion de la feuille de style Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock %}
 
 {% block body %}
     <div class="container">
+        <!-- Barre de navigation -->
         <nav class="navbar navbar-expand-lg" id="navbar">
             <div class="container-fluid">
+                <!-- Formulaire de recherche -->
                 <form class="d-flex w-100" method="GET" action="{{ path('app_station_favoris') }}">
                     <!-- Barre de recherche légèrement élargie -->
                     <input class="form-control me-2" type="search" name="query" placeholder="Rechercher une station" aria-label="Rechercher" style="width: 30%;">
@@ -20,31 +23,37 @@
                     <!-- Bouton Réinitialiser -->
                     <button class="btn btn-outline-danger me-2" type="reset" onclick="window.location.href='{{ path('app_station_favoris') }}';" style="width: 15%;">Réinitialiser</button>
 
-
+                    <!-- Bouton Voir stations favoris -->
                     <button class="btn btn-outline-warning" type="button" onclick="window.location.href='{{ path('app_mes_stations') }}';" style="width: 20%;">Voir stations favoris</button>
                 </form>
             </div>
         </nav>
 
-
+        <!-- Titre de la page -->
         <h1>Liste des stations de vélos</h1>
 
+        <!-- Vérifie s'il y a des stations disponibles -->
         {% if stations is not empty %}
             <ul>
+                <!-- Boucle sur chaque station -->
                 {% for station in stations %}
                     <li>
+                        <!-- Affiche le nom de la station -->
                         <span>{{ station.name }}</span>
+                        <!-- Formulaire pour ajouter la station aux favoris -->
                         <form method="POST" action="{{ path('app_station_favoris') }}" style="display: inline;">
                             <input type="hidden" name="idStations" value="{{ station.station_id }}">
                             <input type="hidden" name="favori" value="add">
                             <button type="submit" class="btn btn-outline-primary" style="border: none; background: none; padding: 5px;">
-                                <span style="font-size: 24px; color: gold;">&#9733;</span> <!-- Icône étoile Unicode -->
+                                <!-- Icône étoile Unicode -->
+                                <span style="font-size: 24px; color: gold;">&#9733;</span>
                             </button>
                         </form>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
+            <!-- Message affiché s'il n'y a aucune station disponible -->
             <p>Aucune station disponible.</p>
         {% endif %}
     </div>

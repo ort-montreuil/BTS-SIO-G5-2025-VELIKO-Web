@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
         }
 
         $user = new User(); //définis l'user comme un objet user pour le formulaire
-        $form = $this->createForm(RegistrationFormType::class, $user); //crée le formulaire d'inscription pour la classe User spécifiquement
+        $form = $this->createForm(RegistrationFormType::class, $user); //crée le formulaire d'inscription pour la classe User spécifiquement grâce au fichier RegistrationFormType.php
         $form->handleRequest($request); //vérifie si le formulaire a été soumis
 
         if ($form->isSubmitted() && $form->isValid()) {

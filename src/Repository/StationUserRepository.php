@@ -24,32 +24,49 @@ class StationUserRepository extends ServiceEntityRepository
     }
 
     // Add custom methods here
-    public function findStationsByUserId(int $userId)
+    public function findStationsByUserId(int $userId) //Récupère les stations d'un utilisateur
     {
+        // Crée un QueryBuilder pour la classe StationUser
         return $this->createQueryBuilder('su')
+            // Sélectionne uniquement l'ID de la station
             ->select("su.idStation")
+            // Ajoute une condition pour filtrer par ID de l'utilisateur
             ->andWhere('su.idUser  = :userId')
+            // Définit le paramètre userId avec la valeur fournie
             ->setParameter('userId', $userId)
+            // Exécute la requête et récupère les résultats sous forme de tableau
             ->getQuery()
             ->getArrayResult();
     }
-    public function findStationNameById(int $stationId)
+
+    public function findStationNameById(int $stationId) //Récupère le nom d'une station par son ID
     {
+        // Crée un QueryBuilder pour la classe StationUser
         return $this->createQueryBuilder('su')
+            // Sélectionne uniquement le nom de la station
             ->select("s.name")
+            // Effectue une jointure interne avec la classe Station
             ->innerJoin(Station::class, "s", 'WITH', "s.station_id = su.idStation") //Comprendre : https://blog.digital-craftsman.de/use-inner-join-in-doctrine-query-builder/
+            // Ajoute une condition pour filtrer par ID de la station
             ->andWhere("su.idStation = :stationId")
+            // Définit le paramètre stationId avec la valeur fournie
             ->setParameter("stationId", $stationId)
+            // Exécute la requête et récupère les résultats
             ->getQuery()
             ->getResult();
-
     }
-    public function deleteStationByStationId(int $stationId)
+
+    public function deleteStationByStationId(int $stationId) //Supprime une station par son ID
     {
+        // Crée un QueryBuilder pour la classe StationUser
         return $this->createQueryBuilder('su')
+            // Définit l'opération de suppression
             ->delete()
+            // Ajoute une condition pour filtrer par ID de la station
             ->andWhere("su.idStation = :stationId")
+            // Définit le paramètre stationId avec la valeur fournie
             ->setParameter("stationId", $stationId)
+            // Exécute la requête de suppression
             ->getQuery()
             ->execute();
     }

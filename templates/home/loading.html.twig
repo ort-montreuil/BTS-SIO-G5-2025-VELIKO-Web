@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     <style>
+        /* Style pour l'écran de chargement */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -16,6 +17,7 @@
             z-index: 9999;
         }
 
+        /* Style pour le texte de chargement */
         #loading-text {
             color: #000000;
             margin-top: 10px;
@@ -25,6 +27,7 @@
             align-items: center;
         }
 
+        /* Style pour les points de chargement */
         .dot {
             height: 10px;
             width: 10px;
@@ -34,14 +37,17 @@
             animation: dot-flashing 1s infinite linear alternate;
         }
 
+        /* Délai d'animation pour le deuxième point */
         .dot:nth-child(2) {
             animation-delay: 0.2s;
         }
 
+        /* Délai d'animation pour le troisième point */
         .dot:nth-child(3) {
             animation-delay: 0.4s;
         }
 
+        /* Animation pour les points de chargement */
         @keyframes dot-flashing {
             0% {
                 opacity: 0.1;
@@ -58,6 +64,7 @@
 
 {% block body %}
     <div id="loading-screen">
+        <!-- Script pour l'icône de chargement -->
         <script src="https://cdn.lordicon.com/lordicon.js"></script>
         <lord-icon
                 src="https://cdn.lordicon.com/znhrmptg.json"
@@ -68,16 +75,18 @@
         </lord-icon>
         <div id="loading-text">
             <h3>Chargement</h3>
+            <!-- Points de chargement animés -->
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
         </div>
     </div>
 
+    <!-- Script pour rediriger après un délai -->
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script>
         setTimeout(function () {
             window.location.href = "{{ path('app_home') }}";
-        }, 1000);
+        }, 1000); // Redirection après 1 seconde
     </script>
 {% endblock %}

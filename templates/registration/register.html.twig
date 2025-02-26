@@ -4,54 +4,54 @@
 
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div> <!-- Affichage des erreurs de vérification d'email -->
     {% endfor %}
 
     {% for flash_success in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">{{ flash_success }}</div>
+        <div class="alert alert-success" role="alert">{{ flash_success }}</div> <!-- Affichage des messages de succès -->
     {% endfor %}
 
     {% for flash_error in app.flashes('error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div> <!-- Affichage des erreurs générales -->
     {% endfor %}
 
-    <h1>Inscription :</h1>
+    <h1>Inscription :</h1> <!-- Titre de la page d'inscription -->
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.nom) }}
-    {{ form_row(registrationForm.prenom) }}
-    {{ form_row(registrationForm.date_naissance) }}
-    {{ form_row(registrationForm.adresse) }}
-    {{ form_row(registrationForm.code_postal) }}
-    {{ form_row(registrationForm.ville) }}
+    {{ form_start(registrationForm) }} <!-- Début du formulaire d'inscription -->
+    {{ form_row(registrationForm.email) }} <!-- Champ pour l'email -->
+    {{ form_row(registrationForm.nom) }} <!-- Champ pour le nom -->
+    {{ form_row(registrationForm.prenom) }} <!-- Champ pour le prénom -->
+    {{ form_row(registrationForm.date_naissance) }} <!-- Champ pour la date de naissance -->
+    {{ form_row(registrationForm.adresse) }} <!-- Champ pour l'adresse -->
+    {{ form_row(registrationForm.code_postal) }} <!-- Champ pour le code postal -->
+    {{ form_row(registrationForm.ville) }} <!-- Champ pour la ville -->
     {{ form_row(registrationForm.plainPassword, {
         'label': 'Mot de passe',
         'attr': {
             'id': 'pwd',
             'placeholder': 'Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial et 1 chiffre.'
         }
-    }) }}
-    {{ form_row(registrationForm.agreeTerms) }}
+    }) }} <!-- Champ pour le mot de passe avec des attributs personnalisés -->
+    {{ form_row(registrationForm.agreeTerms) }} <!-- Champ pour accepter les conditions d'utilisation -->
     <p>
         En vous inscrivant, vous acceptez nos
-        <a href="{{ path('app_rgpd') }}">conditions d'utilisation</a>
+        <a href="{{ path('app_rgpd') }}">conditions d'utilisation</a> <!-- Lien vers les conditions d'utilisation -->
     </p>
 
-    <button type="submit" id="submit" class="btn btn-lg btn-primary">S'inscrire</button>
-    {{ form_end(registrationForm) }}
+    <button type="submit" id="submit" class="btn btn-lg btn-primary">S'inscrire</button> <!-- Bouton de soumission -->
+    {{ form_end(registrationForm) }} <!-- Fin du formulaire d'inscription -->
 
     <script>
-        let pwd = document.getElementById("pwd");
-        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/;
+        let pwd = document.getElementById("pwd"); // Sélection du champ mot de passe
+        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/; // Expression régulière pour valider le mot de passe
 
         // Validation du mot de passe lors de la saisie
         pwd.addEventListener("keyup", function () {
             if (!regex.test(pwd.value)) {
                 pwd.setCustomValidity("Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.");
-                pwd.reportValidity();
+                pwd.reportValidity(); // Affichage du message d'erreur
             } else {
-                pwd.setCustomValidity("");
+                pwd.setCustomValidity(""); // Réinitialisation du message d'erreur
             }
         });
 
@@ -60,9 +60,9 @@
             if (!regex.test(pwd.value)) {
                 event.preventDefault(); // Empêche la soumission si le mot de passe est invalide
                 pwd.setCustomValidity("Votre mot de passe doit contenir minimum 12 caractères, 1 caractère spécial, 1 chiffre, et 1 majuscule.");
-                pwd.reportValidity();
+                pwd.reportValidity(); // Affichage du message d'erreur
             } else {
-                pwd.setCustomValidity(""); // Réinitialise le message d'erreur
+                pwd.setCustomValidity(""); // Réinitialisation du message d'erreur
             }
         });
     </script>

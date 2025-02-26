@@ -4,15 +4,15 @@
 
 {% block body %}
     <div class="container">
-        <h1>Modifier mes informations</h1>
+        <h1>Modifier mes informations</h1> <!-- Titre de la page -->
 
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Mettre à jour</button>
-        {{ form_end(form) }}
+        {{ form_start(form) }} <!-- Début du formulaire -->
+        {{ form_widget(form) }} <!-- Affichage des champs du formulaire -->
+        <button type="submit" class="btn btn-primary">Mettre à jour</button> <!-- Bouton de soumission -->
+        {{ form_end(form) }} <!-- Fin du formulaire -->
 
         {% for message in app.flashes('success') %}
-            <div class="alert alert-success">{{ message }}</div>
+            <div class="alert alert-success">{{ message }}</div> <!-- Affichage des messages de succès -->
         {% endfor %}
     </div>
 {% endblock %}

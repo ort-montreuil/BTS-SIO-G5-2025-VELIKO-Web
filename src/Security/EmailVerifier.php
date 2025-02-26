@@ -12,11 +12,12 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
 {
+    //Ce fichier gère l'envoi et la vérification des emails de confirmation pour les utilisateurs.
     private VerifyEmailHelperInterface $verifyEmailHelper;
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(
+    public function __construct( // Injection de dépendances
         VerifyEmailHelperInterface $verifyEmailHelper,
         MailerInterface $mailer,
         EntityManagerInterface $entityManager
@@ -26,17 +27,17 @@ class EmailVerifier
         $this->entityManager = $entityManager;
     }
 
-    public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void // Envoi d'email de confirmation
     {
-        // Generate signature components for verification link
-        $signatureComponents = $this->verifyEmailHelper->generateSignature(
+        // Génération de la signature de l'URL
+        $signatureComponents = $this->verifyEmailHelper->generateSignature( //permet de sécuriser l'URL
             $verifyEmailRouteName,
             (string) $user->getId(),
             $user->getEmail(),
             ['id' => $user->getId()]
         );
 
-        // Add signed URL and expiration information to the email context
+        // Ajout des paramètres à l'email
         $context = $email->getContext();
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
@@ -44,11 +45,11 @@ class EmailVerifier
 
         $email->context($context);
 
-        // Send the email
+        // Envoi de l'email
         $this->mailer->send($email);
     }
 
-    public function handleEmailConfirmation(Request $request, User $user): void
+    public function handleEmailConfirmation(Request $request, User $user): void // Vérification de l'email
     {
         try {
             $this->verifyEmailHelper->validateEmailConfirmation(

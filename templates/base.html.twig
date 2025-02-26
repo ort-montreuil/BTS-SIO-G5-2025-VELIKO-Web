@@ -53,17 +53,17 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!-- Menu -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Carte</a>
                     </li>
-                    {% if 'home' in app.request.get('_route') %}
+                    {% if 'home' in app.request.get('_route') %} {# Si on est sur la page d'accueil #}
                         <li class="nav-item">
                             <button class="btn btn-link nav-link" id="geolocate">Géolocalisez-moi</button>
                         </li>
                     {% endif %}
-                    {% if not app.user %}
+                    {% if not app.user %} {# Si l'utilisateur n'est pas connecté #}
                         <li class="nav-item">
                             <a class="nav-link" href="/register">S'inscrire</a>
                         </li>
@@ -71,9 +71,9 @@
                             <a class="nav-link" href="/login">Se connecter</a>
                         </li>
                     {% endif %}
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %} {# Si l'utilisateur est connecté #}
                         <li class="nav-item">
-                            <a class="nav-link" href="/station/favoris">Stations Favoris</a>
+                            <a class="nav-link" href="/station/favoris">Stations Favoris</a> <!-- Lien vers les stations favorites -->
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/reservation">Réservation</a>
@@ -84,13 +84,13 @@
                 <!-- Logo Paramètres complètement à droite -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a class="nav-link" href="/parametre" style="display: flex; align-items: center;">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %} {# Si l'utilisateur est connecté #}
+                            <a class="nav-link" href="/parametre" style="display: flex; align-items: center;"> <!-- Lien vers les paramètres -->
                                 <img src="{{ asset('images/userlogin.png') }}" alt="Paramètres" width="50" height="50">
                             </a>
                         {% endif %}
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"> <!-- Bouton pour changer de thème -->
                         <button id="toggle-theme" class="nav-link"
                                 style="border: none; background: none; font-size: 1.5rem;">
                             <i id="theme-icon" class="bi bi-sun"></i>
@@ -110,7 +110,7 @@
                     </li>
                     <!-- Encadré pour le calendrier à droite -->
                     <li class="nav-item">
-                        <div id="calendar" class="card info-block">
+                        <div id="calendar" class="card info-block"> <!-- Encadré pour l'heure et la date -->
                             <div class="card-body">
                                 <h5 class="card-title">Date & Heure</h5>
                                 <p id="clock-info" class="card-text">
@@ -126,7 +126,7 @@
     </nav>
 </header>
 
-<div class="container-fluid">
+<div class="container-fluid"> <!-- Contenu de la page -->
     {% block body %}{% endblock %}
     {% block footer %}{% endblock %}
 </div>
@@ -142,26 +142,26 @@
     const themeIcon = document.getElementById('theme-icon');
 
     function applyTheme() {
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        document.body.setAttribute('data-theme', currentTheme);
-        themeIcon.className = currentTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
-        const navbar = document.getElementById('navbar');
-        navbar.classList.toggle('navbar-dark', currentTheme === 'dark');
-        navbar.classList.toggle('navbar-light', currentTheme !== 'dark');
-        navbar.classList.toggle('bg-dark', currentTheme === 'dark');
-        navbar.classList.toggle('bg-light', currentTheme !== 'dark');
+        const currentTheme = localStorage.getItem('theme') || 'light'; // Récupère le thème actuel ou utilise le thème clair par défaut
+        document.body.setAttribute('data-theme', currentTheme); //
+        themeIcon.className = currentTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon'; // Change l'icône en fonction du thème
+        const navbar = document.getElementById('navbar'); // Change le thème de la barre de navigation
+        navbar.classList.toggle('navbar-dark', currentTheme === 'dark'); // Ajoute la classe navbar-dark si le thème est sombre
+        navbar.classList.toggle('navbar-light', currentTheme !== 'dark'); // Ajoute la classe navbar-light si le thème est clair
+        navbar.classList.toggle('bg-dark', currentTheme === 'dark');  // Ajoute la classe bg-dark si le thème est sombre
+        navbar.classList.toggle('bg-light', currentTheme !== 'dark'); // Ajoute la classe bg-light si le thème est clair
     }
 
-    applyTheme();
+    applyTheme(); // Applique le thème au chargement de la page
 
-    toggleThemeButton.addEventListener('click', () => {
-        const currentTheme = document.body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.body.setAttribute('data-theme', newTheme);
+    toggleThemeButton.addEventListener('click', () => { // Change le thème lors du clic sur le bouton
+        const currentTheme = document.body.getAttribute('data-theme');  // Récupère le thème actuel
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';  // Change le thème
+        document.body.setAttribute('data-theme', newTheme);  // Change le thème du body
         themeIcon.className = newTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
-        localStorage.setItem('theme', newTheme);
-        const navbar = document.getElementById('navbar');
-        navbar.classList.toggle('navbar-dark', newTheme === 'dark');
+        localStorage.setItem('theme', newTheme); // Enregistre le thème dans le stockage local
+        const navbar = document.getElementById('navbar'); // Change le thème de la barre de navigation
+        navbar.classList.toggle('navbar-dark', newTheme === 'dark'); // Ajoute la classe navbar-dark si le thème est sombre
         navbar.classList.toggle('navbar-light', newTheme !== 'dark');
         navbar.classList.toggle('bg-dark', newTheme === 'dark');
         navbar.classList.toggle('bg-light', newTheme !== 'dark');
@@ -170,24 +170,24 @@
 
 <!-- Script pour la météo de Paris -->
 <script>
-    async function fetchWeather() {
+    async function fetchWeather() { // Fonction pour récupérer la météo
         const apiKey = "{{ api_meteo }}";
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=${apiKey}&units=metric&lang=fr`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=${apiKey}&units=metric&lang=fr`; // URL de l'API météo
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) {
+            const response = await fetch(url); // Récupère les données météo
+            if (!response.ok) { // Si la réponse n'est pas OK, lance une erreur
                 throw new Error(`Erreur : ${response.status}`);
             }
 
-            const data = await response.json();
-            const temperature = data.main.temp;
+            const data = await response.json(); // Convertit la réponse en JSON
+            const temperature = data.main.temp; // Extrait la température
             const weatherDescription = data.weather[0].main; // Extrait le type de temps (ex : Clear, Rain, etc.)
             const currentHour = new Date().getHours(); // Récupère l'heure actuelle pour détecter la nuit
 
 
-            const weatherContainer = document.getElementById('weather');
-            weatherContainer.style.color = "white";
+            const weatherContainer = document.getElementById('weather'); // Sélectionne le conteneur de la météo
+            weatherContainer.style.color = "white"; // Pour que le texte soit visible sur les fonds foncés
             // Debug pour voir les valeurs
             console.log("Météo actuelle :", weatherDescription);
             console.log("Heure actuelle :", currentHour);
@@ -222,7 +222,7 @@
         }
     }
 
-    function updateClock(timeIcon) {
+    function updateClock(timeIcon) { // Fonction pour mettre à jour l'heure et la date
         const now = new Date();
         const currentHour = now.getHours();
         const currentDate = now.toLocaleDateString('fr-FR', {
@@ -269,5 +269,5 @@
     }, 1000);
 </script>
 </body>
-<script src="{{ asset('geolocaliser.js') }}"></script>
+<script src="{{ asset('geolocaliser.js') }}"></script> <!-- Script pour la géolocalisation -->
 </html>

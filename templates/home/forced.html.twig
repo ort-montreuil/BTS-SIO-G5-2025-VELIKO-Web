@@ -1,5 +1,6 @@
 {% block body %}
     <style>
+        /* Style du corps de la page */
         body {
             background-color: #f8f9fa;
             display: flex;
@@ -9,6 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
+        /* Style de la carte */
         .card {
             background: #ffffff;
             padding: 20px;
@@ -18,16 +20,19 @@
             max-width: 400px;
             text-align: center;
         }
+        /* Style du titre de la carte */
         .card h1 {
             color: #007bff;
             font-size: 1.5rem;
             margin-bottom: 10px;
         }
+        /* Style du texte de la carte */
         .card p {
             color: #6c757d;
             font-size: 0.9rem;
             margin-bottom: 20px;
         }
+        /* Style des champs de formulaire */
         .form-control {
             width: 100%;
             padding: 10px;
@@ -36,6 +41,7 @@
             border-radius: 5px;
             font-size: 0.9rem;
         }
+        /* Style du bouton principal */
         .btn-primary {
             background-color: #007bff;
             color: #ffffff;
@@ -45,23 +51,27 @@
             cursor: pointer;
             width: 100%;
         }
+        /* Effet au survol du bouton principal */
         .btn-primary:hover {
             background-color: #0056b3;
         }
 
+        /* Style du lien de déconnexion */
         .link-danger {
-             color: #dc3545 !important; /* Bootstrap's danger color */
-         }
+            color: #dc3545 !important; /* Couleur danger de Bootstrap */
+        }
     </style>
 
     <div class="card">
         <h1>Changement de mot de passe requis</h1>
         <p>Votre mot de passe doit être changé. Veuillez entrer un nouveau mot de passe sécurisé.</p>
-        <form method="post" action="{{ path('app_change_password') }}">
+        <!-- Formulaire de changement de mot de passe -->
+        <form method="post" action="{{ path('app_change_password') }}"> <!-- Route pour changer le mot de passe -->
             <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Nouveau mot de passe" required>
             <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirmer le mot de passe" required>
             <button type="submit" class="btn-primary">Changer le mot de passe</button>
         </form>
+        <!-- Lien pour se déconnecter -->
         <a href="{{ path('app_logout') }}" class="link-danger">Se déconnecter</a>
     </div>
 {% endblock %}

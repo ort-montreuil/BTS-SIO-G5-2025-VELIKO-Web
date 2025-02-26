@@ -4,59 +4,65 @@
 
 {% block body %}
     <style>
-
+        /* Style du bouton de suppression */
         .trash-button {
-            background-color: red;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            transition: background-color 0.3s ease;
+            background-color: red; /* Couleur de fond rouge */
+            border: none; /* Pas de bordure */
+            border-radius: 5px; /* Bords arrondis */
+            cursor: pointer; /* Curseur en forme de main */
+            display: inline-flex; /* Affichage en ligne flexible */
+            align-items: center; /* Alignement vertical centré */
+            justify-content: center; /* Alignement horizontal centré */
+            padding: 8px; /* Espacement interne */
+            transition: background-color 0.3s ease; /* Transition douce pour la couleur de fond */
         }
 
+        /* Style de l'icône de la poubelle */
         .icon-trash {
-            width: 24px;
-            height: 24px;
-            fill: white;
-            transition: transform 0.3s ease;
+            width: 24px; /* Largeur de l'icône */
+            height: 24px; /* Hauteur de l'icône */
+            fill: white; /* Couleur de remplissage blanche */
+            transition: transform 0.3s ease; /* Transition douce pour la transformation */
         }
 
+        /* Style du couvercle de la poubelle */
         .trash-lid {
-            transform-origin: top center;
-            transition: transform 0.3s ease;
+            transform-origin: top center; /* Origine de la transformation au centre supérieur */
+            transition: transform 0.3s ease; /* Transition douce pour la transformation */
         }
 
+        /* Effet au survol du bouton de suppression */
         .trash-button:hover .trash-lid {
-            transform: rotate(-25deg);
+            transform: rotate(-25deg); /* Rotation du couvercle de la poubelle */
         }
 
+        /* Changement de couleur de fond au survol du bouton de suppression */
         .trash-button:hover {
-            background-color: darkred;
+            background-color: darkred; /* Couleur de fond rouge foncé */
         }
 
     </style>
     <div class="example-wrapper">
-        <h1 class="text-center">Mes Stations Favoris</h1>
+        <h1 class="text-center">Mes Stations Favoris</h1> <!-- Titre centré de la page -->
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h3>Liste des stations</h3>
+                    <h3>Liste des stations</h3> <!-- Sous-titre de la section -->
                     {% if station_names is empty %}
-                        <p>Vous n'avez pris aucune station.</p>
+                        <p>Vous n'avez pris aucune station.</p> <!-- Message si aucune station n'est sélectionnée -->
                     {% else %}
                         <ul class="list-group" id="station-list">
                             {% for station in station_names %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ station.name }}
+                                    {{ station.name }} <!-- Nom de la station -->
                                     <form method="POST" action="{{ path('app_station_delete', {'id': station.id}) }}">
+                                        <!-- Formulaire pour supprimer une station -->
                                         <button type="submit" class="trash-button">
+                                            <!-- Bouton de suppression avec icône de poubelle -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" class="icon-trash">
-                                                <path class="trash-lid" d="M3 2.5h10v1H3v-1z"/>
-                                                <path d="M4 4h8v10H4V4z"/>
-                                                <path d="M5 5v7h1V5H5zm5 0v7h1V5h-1z"/>
+                                                <path class="trash-lid" d="M3 2.5h10v1H3v-1z"/> <!-- Couvercle de la poubelle -->
+                                                <path d="M4 4h8v10H4V4z"/> <!-- Corps de la poubelle -->
+                                                <path d="M5 5v7h1V5H5zm5 0v7h1V5h-1z"/> <!-- Poignées de la poubelle -->
                                             </svg>
                                         </button>
                                     </form>
@@ -65,7 +71,7 @@
                         </ul>
                     {% endif %}
                     <br>
-                    <button class="btn btn-outline-warning" onclick="window.location.href='{{ path('app_station_favoris') }}';">Retourner aux stations favoris</button>
+                    <button class="btn btn-outline-warning" onclick="window.location.href='{{ path('app_station_favoris') }}';">Retourner aux stations favoris</button> <!-- Bouton pour retourner aux stations favoris -->
                 </div>
             </div>
         </div>

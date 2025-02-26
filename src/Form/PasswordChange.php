@@ -16,7 +16,7 @@ class PasswordChange extends AbstractType
     {
         $builder
             ->add('entrezVotreAncienMotDePasse', PasswordType::class, [
-                'mapped' => false,
+                'mapped' => false, // Ce champ n'est pas lié à une propriété de l'entité User
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer votre mot de passe actuel',
