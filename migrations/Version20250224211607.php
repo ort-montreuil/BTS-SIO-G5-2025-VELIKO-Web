@@ -19,7 +19,13 @@ final class Version20250224211607 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        // Supprime les tables si elles existent déjà
+        $this->addSql('DROP TABLE IF EXISTS reservation');
+        $this->addSql('DROP TABLE IF EXISTS station');
+        $this->addSql('DROP TABLE IF EXISTS station_user');
+        $this->addSql('DROP TABLE IF EXISTS user');
+
+        // Crée les tables
         $this->addSql('CREATE TABLE reservation (id INT AUTO_INCREMENT NOT NULL, email_user VARCHAR(255) NOT NULL, date DATE NOT NULL, heure_debut TIME NOT NULL, heure_fin TIME NOT NULL, id_station_depart BIGINT NOT NULL, id_station_arrivee BIGINT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE station (station_id BIGINT NOT NULL, station_code INT NOT NULL, name VARCHAR(150) NOT NULL, lat DOUBLE PRECISION NOT NULL, lon DOUBLE PRECISION NOT NULL, capacity INT NOT NULL, PRIMARY KEY(station_id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE station_user (id INT AUTO_INCREMENT NOT NULL, id_user INT NOT NULL, id_station BIGINT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');

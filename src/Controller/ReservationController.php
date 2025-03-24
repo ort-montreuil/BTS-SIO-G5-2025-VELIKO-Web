@@ -40,7 +40,7 @@ class ReservationController extends AbstractController
             $idStationFin = $request->request->get('stationEnd');
             $velos = $this->client->request('GET', $_ENV['API_VELIKO_URL'] . "/velos");
             $velos = $velos->toArray();
-            $auth_token = json_decode(file_get_contents("../var/api/configDataset.json"), true)['token']['default']; // Récupérer le token d'authentification
+            $auth_token = $_ENV["TOKEN"]; // Récupérer le token d'authentification
             $veloFound = false;
 
             // Parcourir les vélos pour trouver un vélo disponible
